@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Doe</title>
+    <!-- 导入头部 ,统一引用那些静态资源  -->
+    <link rel="stylesheet" th:href="@{~/v3/assets/css/dropzone.css}" />
+    <script th:replace="pages/tpl/head::header"></script>
+</head>
+<body>
+
+<div th:replace="pages/tpl/top::topper"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="main-container-inner">
+
+        <div th:replace="pages/tpl/left::lefter"></div>
+
+        <div class="main-content">
+            <div th:replace="pages/tpl/bread::breader"></div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        增加接口依赖向导
+                    </h1>
+                </div>
+                <!-- /.page-header -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="widget-box">
+                                    <div class="widget-header widget-header-blue widget-header-flat">
+                                        <h4 class="lighter">向导</h4>
+
+                                        <div class="widget-toolbar">
+                                        </div>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <div id="fuelux-wizard" class="row-fluid" data-target="#step-container">
+                                                <ul class="wizard-steps">
+                                                    <li data-target="#step1" class="active">
+                                                        <span class="step">1</span>
+                                                        <span class="title">填写POM</span>
+                                                    </li>
+
+                                                    <li data-target="#step2">
+                                                        <span class="step">2</span>
+                                                        <span class="title">解析POM</span>
+                                                    </li>
+
+                                                    <li data-target="#step3">
+                                                        <span class="step">3</span>
+                                                        <span class="title">加载JAR</span>
+                                                    </li>
+
+                                                    <li data-target="#step4">
+                                                        <span class="step">4</span>
+                                                        <span class="title">完成</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <hr />
+                                            <div class="step-content row-fluid position-relative"
+                                                 id="step-container">
+
+                                                <div class="step-pane active" id="step1">
+                                                    <h5 class="lighter block green" >
+                                                        请按提示的格式填写GAV依赖。
+                                                    </h5>
+                                                    <br>
+                                                    <div class="center">
+                                                        <textarea class="form-control" id="txtPomContent" rows="15"
+                                                                  placeholder="        <dependency>
+            <groupId>mmc-dubbo</groupId>
+            <artifactId>api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>"></textarea>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="step-pane" id="step2">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="widget-box">
+                                                                <div class="widget-header widget-header-flat">
+                                                                    <h4 class="smaller" id="lblTitle">请点击解析按钮</h4>
+
+                                                                    <div class="widget-toolbar">
+                                                                        <p>
+                                                                            <span class="btn btn-success btn-sm tooltip-success" data-rel="popover" data-placement="right" onclick="doParsePom();"
+                                                                                  data-content="Well done! You successfully read this important alert message.">开始解析</span> </p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="widget-body">
+                                                                    <div class="widget-main">
+
+                                                                        <dl id="txtParseConsole" style="overflow-y: scroll;height: 300px;">
+
+                                                                        </dl>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="step-pane" id="step3">
+                                                    <div class="page-content">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <!-- PAGE CONTENT BEGINS -->
+
+                                                                <div class="col-xs-12">
+                                                                    <div class="center">
+
+                                                                        <a href="#" class="btn btn-app btn-success" onclick="doReload();">
+                                                                            <i class="icon-refresh bigger-230"></i>
+                                                                            Reload
+                                                                        </a>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="space-6"></div>
+
+                                                                    <div class="vspace-sm"></div>
+
+                                                                </div>
+                                                                <!-- /row -->
+
+                                                                <!-- PAGE CONTENT ENDS -->
+                                                            </div>
+                                                            <!-- /.col -->
+                                                        </div>
+                                                        <!-- /.row -->
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="step-pane" id="step4">
+                                                    <div class="hide">
+                                                        <form id="applyForm" action="/doe/home/index">
+
+                                                        </form>
+                                                    </div>
+                                                    <div class="center">
+                                                        <h3 class="green">确认提交!</h3>
+                                                        确认无误后点击完成提交。
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr />
+                                            <div class="row-fluid wizard-actions">
+                                                <button class="btn btn-prev">
+                                                    <i class="icon-arrow-left"></i>
+                                                    上一步
+                                                </button>
+
+                                                <button class="btn btn-success btn-next" data-last="完成">
+                                                    下一步
+                                                    <i class="icon-arrow-right icon-on-right"></i>
+                                                </button>
+                                            </div>
+                                        </div><!-- /widget-main -->
+                                    </div><!-- /widget-body -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- /.col -->
+                </div>
+
+                <!-- /.row -->
+            </div>
+            <!-- /.page-content -->
+        </div>
+        <!-- /.main-content -->
+
+    </div>
+    <!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up"
+       class="btn-scroll-up btn btn-sm btn-inverse"> <i
+            class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<!-- /.main-container -->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+
+<script th:src="@{~/v3/assets/js/fuelux/fuelux.wizard.min.js}"></script>
+<script th:src="@{~/v3/assets/js/bootbox.min.js}"></script>
+<script th:replace="pages/tpl/foot::footer"></script>
+
+<script type="text/javascript">
+
+    var jobRef = ""; // 定时任务引用
+
+    function doReload() {
+
+        var param = {};
+        Nora.Ajax("/doe/pom/doLoad", param, function (data) {
+
+            bootbox.alert(data.msg);
+
+        }, function (data) {
+            bootbox.alert(data.msg);
+        });
+    }
+
+    function doRequest(requestId) {
+
+        var param = {"requestId": requestId};
+
+        Nora.Ajax("/doe/pom/doMsg", param, function (data) {
+            if (data.success) {
+                // on success
+                if (data.code == 1) {
+                    // continue get message
+                    var message = data.data;
+                    $("#txtParseConsole").append("<dd>" + message + "</dd>");
+
+
+                } else if (data.code == 2) {
+                    // complete
+                    var message = data.data;
+                    // 替换所有的换行符
+                    message = message.replace(/\r\n/g, "<br>")
+                    message = message.replace(/\n/g, "<br>");
+                    $("#txtParseConsole").append("<dd>" + message + "</dd>");
+                    $("#lblTitle").text(data.msg);
+
+                    clearInterval(jobRef);
+
+                } else {
+
+                    // 阻止定时刷新
+                    clearInterval(jobRef);
+                }
+
+            } else {
+                // on fail
+                // 阻止定时刷新
+                clearInterval(jobRef);
+                bootbox.alert(data.msg);
+            }
+
+        }, function (data) {
+            // on fail
+            // 阻止定时刷新
+            clearInterval(jobRef);
+            bootbox.alert(data.msg);
+        });
+    }
+    function getRealTimeMessage(requestId) {
+
+        if (null == requestId || requestId.length <= 0) {
+            bootbox.alert("获取不到请求ID！");
+            return;
+        }
+
+        // 设置定时刷新
+        jobRef = setInterval(function(){
+            doRequest(requestId);
+        },1000);
+
+    }
+    function doParsePom() {
+
+        var pom = $("#txtPomContent").val();
+        if (null == pom || pom.length <= 0) {
+            bootbox.alert("请输入POM依赖！");
+            return;
+        }
+        pom = $("<span/>").text(pom).html(); // 转码一下
+        var param = {"pom": pom};
+
+        Nora.Ajax("/doe/pom/doParse", param, function (data) {
+            if (data.success) {
+                // on success
+                var msg = data.msg;
+                $("#lblTitle").text(msg);
+                var requestId = data.data.requestId;
+
+                getRealTimeMessage(requestId);
+
+            } else {
+                bootbox.alert(data.msg);
+            }
+
+        }, function (data) {
+           // on fail
+            bootbox.alert(data.msg);
+        });
+    }
+
+    jQuery(function($) {
+
+        $('[data-rel=tooltip]').tooltip();
+
+        var $validation = true;
+        $('#fuelux-wizard').ace_wizard().on('change' , function(e, info){
+
+        }).on('finished', function(e) {
+
+        }).on('stepclick', function(e, info){
+
+
+        });
+
+        /*
+        var html = "        <dependency>\n" +
+            "        <groupId>org.apache.commons</groupId>\n" +
+            "        <artifactId>commons-lang3</artifactId>\n" +
+            "        <version>3.7</version>\n" +
+            "        </dependency>\n";
+
+        $("#txtPomContent").val(html);
+        */
+
+    });
+</script>
+
+</body>
+</html>

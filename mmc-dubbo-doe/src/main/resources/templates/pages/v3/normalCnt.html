@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Doe</title>
+    <!-- 导入头部 ,统一引用那些静态资源  -->
+    <link rel="stylesheet" th:href="@{~/v3/assets/css/chosen.css}" />
+    <style>
+        .scroll { overflow-y: scroll; overflow-x: scroll;}
+    </style>
+    <script th:replace="pages/tpl/head :: header"></script>
+</head>
+<body>
+
+<div th:replace="pages/tpl/top :: topper"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="main-container-inner">
+
+        <div th:replace="pages/tpl/left :: lefter"></div>
+
+        <div class="main-content">
+            <div th:replace="pages/tpl/bread :: breader"></div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        连接管理
+                    </h1>
+                </div>
+                <!-- /.page-header -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+
+                        <div class="widget-box">
+                            <div class="widget-header widget-header-small">
+                                <h5 class="lighter">注册中心</h5>
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <form class="form-search">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-8">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control search-query" placeholder="127.0.0.1:2181" id="txtConnect" autocomplete="true"/>
+                                                    <span class="input-group-btn">
+																		<button type="button" class="btn btn-purple btn-sm" onclick="doConnect();">
+																			连接
+																			<!--<i class="icon-search icon-on-right bigger-110"></i>-->
+																		</button>
+																	</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr hr-24"></div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h4>接口名称</h4>
+
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <div class="row-fluid">
+                                                <br />
+                                                <select class="width-90 chosen-select" id="cboInterfaces" data-placeholder="请选择接口">
+
+                                                </select>
+                                                <br>&nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h4>提供者地址</h4>
+
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <div class="row-fluid">
+                                                <br />
+                                                <select class="width-90 chosen-select" id="cboProviders" data-placeholder="请选择提供者">
+
+                                                </select>
+                                                <br>&nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-4">
+                                <button class="btn btn-app btn-pink btn-sm" onclick="doListMethods();">
+                                    <i class="icon-share-alt bigger-200"></i>
+                                    拉取方法
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="hr hr-24"></div>
+
+                        <div class="row">
+
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h4>方法名称</h4>
+
+                                        <span class="widget-toolbar">
+
+														<a href="#" data-action="collapse">
+															<i class="icon-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="icon-remove"></i>
+														</a>
+													</span>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+
+                                            <div class="row-fluid" style="height: 300px; overflow-scrolling: auto;">
+                                                <div class="control-group" id="txtMethods">
+
+
+
+                                                </div>
+                                                <div style="display:none;" id="tplMethod">
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="rdMethodKey" type="radio" class="ace rdMethod" value="{}"/>
+                                                            <span class="lbl" style="font-size: 10px;"> {} </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /span -->
+
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h4>方法参数</h4>
+
+                                        <span class="widget-toolbar">
+														<a href="#" data-action="settings" id="formatParam" onclick="doFormatParam();">
+															<i class="icon-eye-open"></i>
+														</a>
+														<a href="#" data-action="collapse">
+															<i class="icon-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="icon-remove"></i>
+														</a>
+													</span>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                                <textarea class="form-control" id="txtParams" rows="15"
+                                                          placeholder=""></textarea>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /span -->
+
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h4>响应结果</h4>
+
+                                        <span class="widget-toolbar">
+														<a href="#" data-action="settings" id="formatResult" onclick="doFormatResult();">
+															<i class="icon-eye-open"></i>
+														</a>
+														<a href="#" data-action="collapse">
+															<i class="icon-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="icon-remove"></i>
+														</a>
+													</span>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <div class="row-fluid">
+                                                <textarea id="txtResult" name="txtResult" rows="30"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /span -->
+
+                        </div><!-- /row -->
+
+                        <div class="row">
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-info" type="button" onclick="doSend();">
+                                        <i class="icon-ok bigger-110"></i>
+                                        发送
+                                    </button>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" id="bootbox-regular">保存</button>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" type="reset">
+                                        <i class="icon-undo bigger-110"></i>
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div><!-- /.col -->
+                </div>
+
+                <!-- /.row -->
+            </div>
+            <!-- /.page-content -->
+        </div>
+        <!-- /.main-content -->
+
+    </div>
+    <!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up"
+       class="btn-scroll-up btn btn-sm btn-inverse"> <i
+            class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<!-- /.main-container -->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+
+<script th:src="@{~/v3/assets/js/chosen.jquery.min.js}"></script>
+<script th:src="@{~/v3/assets/js/bootbox.min.js}"></script>
+<script th:replace="pages/tpl/foot :: footer"></script>
+<script th:src="@{~/v3/js/jquery.jsonEdit.js}"></script>
+
+
+<script type="text/javascript">
+
+    var resultEditor;
+    var paramEditor;
+
+    function doFormatResult() {
+        resultEditor.doFormat();
+        $(".resultJsonEditor").addClass("scroll");
+    }
+    function doFormatParam() {
+        paramEditor.doFormat();
+        $(".paramJsonEditor").addClass("scroll");
+    }
+    function doSend() {
+
+        var providerKey = $("#cboProviders").val();
+        var methodKey = $("input[name='rdMethodKey']:checked").val();
+        var json = paramEditor.getValue();
+
+        if (null == providerKey || providerKey.length <= 0) {
+            return;
+        }
+        if (null == json || json.length <= 0) {
+            return;
+        }
+
+        var params = {"providerKey": providerKey, "json": json, "methodKey": methodKey};
+        Nora.Ajax("/doe/dubbo/doSend", params, function (data) {
+
+            if (data.success && null != data.data && data.data.length > 0) {
+
+                // on success
+                $(".resultJsonEditor").html(data.data); // clear
+                doFormatResult();
+
+            } else {
+                // on fail
+                bootbox.alert(null == data ? "操作失败！" : data.msg);
+            }
+
+        }, function (data) {
+            // on error
+            bootbox.alert(null == data ? "操作异常!" : data.msg);
+        });
+
+    }
+    
+    function doPrepareMethodParams() {
+
+        $(":radio").click(function() {
+
+            var methodKey = $(this).val();
+
+            var params = { "methodKey": methodKey};
+            Nora.Ajax("/doe/dubbo/doListParams", params, function (data) {
+
+                if (data.success && null != data.data && data.data.length > 0) {
+
+                    // on success
+                    // $("#txtParams").val(data.data);
+                    $(".paramJsonEditor").html(data.data); // clear
+                    doFormatParam();
+
+                } else {
+                    // on fail
+                    bootbox.alert(null == data ? "操作失败！" : data.msg);
+                }
+
+            }, function (data) {
+                // on error
+                bootbox.alert(null == data ? "操作异常!" : data.msg);
+            });
+        });
+    }
+
+    function doListMethods() {
+
+        var providerKey = $("#cboProviders").val();// 这就是selected的值
+        var interfaceName = $("#cboInterfaces").val();
+
+
+        var params = {"providerKey": providerKey, "serviceName": interfaceName};
+        Nora.Ajax("/doe/dubbo/doListMethods", params, function (data) {
+
+            if (data.success && null != data.data && data.data.length > 0) {
+
+                // on success
+                $("#txtMethods").html(""); // clear
+
+                for (var i = 0; i < data.data.length; i++) {
+
+                    var d = data.data[i];
+                    var html = Nora.Util.StringUtil.format($("#tplMethod").html(), d.methodKey, d.methodText);
+                    $(html).appendTo("#txtMethods");
+
+                }
+
+                // bind the click event and prepare method params.
+                doPrepareMethodParams()
+
+            } else {
+                // on fail
+                bootbox.alert(data.msg);
+            }
+
+        }, function (data) {
+            // on error
+            bootbox.alert(data.msg);
+        });
+    }
+
+    function doListProviders(serviceName) {
+
+        var conn = $("#txtConnect").val();// 这就是selected的值
+
+        var params = {"conn": conn, "serviceName": serviceName};
+        Nora.Ajax("/doe/dubbo/doListProviders", params, function (data) {
+
+            if (data.success && null != data.data && data.data.length > 0) {
+
+                // on success
+                $("#cboProviders").html("<option value=\"\">&nbsp;</option>"); // clear
+                for (var i = 0; i < data.data.length; i++) {
+
+                    var d = data.data[i];
+
+                    var html = Nora.Util.StringUtil.format("<option value='{}'>{}:{}</option>", d.key, d.host, d.port);
+                    $(html).appendTo("#cboProviders");
+                }
+
+                $("#cboProviders").chosen(); // 渲染
+
+            } else {
+                // on fail
+                $("#cboProviders").html(""); // clear
+                bootbox.alert(data.msg);
+            }
+
+        }, function (data) {
+            // on error
+            $("#cboProviders").html(""); // clear
+            bootbox.alert(data.msg);
+        });
+    }
+
+    function doConnect() {
+
+        var conn = $("#txtConnect").val();
+        if (null == conn || conn.length <= 0) {
+            bootbox.alert("请输入连接地址！");
+            return;
+        }
+
+        var params = {"conn": conn};
+        Nora.Ajax("/doe/dubbo/doConnect", params, function (data) {
+
+            if (data.success && null != data.data && data.data.length > 0) {
+
+                // on success
+                $("#cboInterfaces").html("<option value=\"\">&nbsp;</option>"); // clear
+                var keyWordSearch = "";
+                var wholeWordSearch = "";
+                for (var i = 0; i < data.data.length; i++) {
+
+                    var d = data.data[i];
+
+                    // for whole input search
+                    wholeWordSearch += Nora.Util.StringUtil.format("<option value='{}'>{}</option>", d.serviceName, d.serviceName);
+
+                    // for key word search
+                    var text = d.serviceName.replace(/\./g, " ");
+                    keyWordSearch += Nora.Util.StringUtil.format("<option value='{}'>{}</option>", d.serviceName, text);
+
+                }
+
+                if (wholeWordSearch.length > 0) {
+                    $("#cboInterfaces").append(wholeWordSearch);
+                    $("#cboInterfaces").append(keyWordSearch);
+                }
+
+                $("#cboInterfaces").chosen(); // 渲染
+                // 绑定事件
+                $("#cboInterfaces").change(function () {
+                    var serviceName = $(this).children('option:selected').val();// 这就是selected的值
+                    doListProviders(serviceName);
+                    doReset();
+                });
+
+            } else {
+                // on fail
+                bootbox.alert(data.msg);
+            }
+
+        }, function (data) {
+            // on error
+            bootbox.alert(data.msg);
+        });
+    }
+
+    function doReset() {
+
+        $("#txtMethods").html(""); // clear
+        $("#cboProviders").html(""); // clear
+    }
+
+    function doSave(caseName) {
+
+        var providerKey = $("#cboProviders").val();
+        var methodKey = $("input[name='rdMethodKey']:checked").val();
+        var json = paramEditor.getValue();
+
+        if (null == providerKey || providerKey.length <= 0) {
+            bootbox.error("请选择提供者！");
+            return;
+        }
+        if (null == json || json.length <= 0) {
+            bootbox.error("请输入合法参数！");
+            return;
+        }
+
+        var params = {"providerKey": providerKey, "json": json, "methodKey": methodKey, "caseName": caseName};
+        Nora.Ajax("/doe/case/doSave", params, function (data) {
+
+            if (data.success && null != data.data && data.data.length > 0) {
+
+                // on success
+                bootbox.alert(data.msg);
+
+            } else {
+                // on fail
+                bootbox.alert(null == data ? "操作失败！" : data.msg);
+            }
+
+        }, function (data) {
+            // on error
+            bootbox.alert(null == data ? "操作异常!" : data.msg);
+        });
+    }
+
+    jQuery(function($) {
+
+        $("#txtConnect").val("127.0.0.1:2181");
+
+        resultEditor = $("#txtResult").jsonEdit({
+            debug: false
+            , dynamic: false
+            , buttonSelector: '#formatResult'
+            , height: 300
+            , className: 'resultJsonEditor'
+            , onError: function () {
+            }
+        });
+        paramEditor = $("#txtParams").jsonEdit({
+            debug: false
+            , dynamic: false
+            , buttonSelector: '#formatParam'
+            , height: 300
+            , className: 'paramJsonEditor'
+            , onError: function () {
+            }
+        });
+        $("#bootbox-regular").on('click', function() {
+            bootbox.prompt("请填写用例名称", function(result) {
+                if (result === null) {
+                    //Example.show("Prompt dismissed");
+                } else {
+                    doSave(result);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

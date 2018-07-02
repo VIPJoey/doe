@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Doe</title>
+    <!-- 导入头部 ,统一引用那些静态资源  -->
+    <link rel="stylesheet" th:href="@{~/v3/assets/css/chosen.css}" />
+    <script th:replace="pages/tpl/head::header"></script>
+</head>
+<body>
+
+<div th:replace="pages/tpl/top::topper"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="main-container-inner">
+
+        <div th:replace="pages/tpl/left::lefter"></div>
+
+        <div class="main-content">
+            <div th:replace="pages/tpl/bread::breader"></div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        连接管理
+                    </h1>
+                </div>
+                <!-- /.page-header -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <h3 class="header smaller lighter blue">保存的用例</h3>
+                                <div class="table-responsive">
+
+                                    <table id="grid-table"></table>
+                                    <div id="grid-pager"></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="hr hr-24"></div>
+
+
+                        <div class="row">
+
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h4>方法名称</h4>
+
+                                        <span class="widget-toolbar">
+
+														<a href="#" data-action="collapse">
+															<i class="icon-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="icon-remove"></i>
+														</a>
+													</span>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+
+                                            <div class="row-fluid" style="height: 300px; overflow-scrolling: auto;">
+                                                <div class="control-group" id="txtMethods">
+
+
+
+                                                </div>
+                                                <div style="display:none;" id="tplMethod">
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="rdMethodKey" type="radio" class="ace" value="{}" checked="true"/>
+                                                            <span class="lbl" style="font-size: 10px;"> {} </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /span -->
+
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h4>方法参数</h4>
+
+                                        <span class="widget-toolbar">
+
+														<a href="#" data-action="collapse">
+															<i class="icon-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="icon-remove"></i>
+														</a>
+													</span>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                                <textarea class="form-control" id="txtParams" rows="15"
+                                                          placeholder=""></textarea>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /span -->
+
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="widget-box">
+                                    <div class="widget-header">
+                                        <h4>响应结果</h4>
+
+                                        <span class="widget-toolbar">
+
+														<a href="#" data-action="collapse">
+															<i class="icon-chevron-up"></i>
+														</a>
+
+														<a href="#" data-action="close">
+															<i class="icon-remove"></i>
+														</a>
+													</span>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                                <textarea id="txtResult" class="form-control"  rows="15"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /span -->
+
+                        </div><!-- /row -->
+
+                        <div class="row">
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-info" type="button" onclick="doSend();">
+                                        <i class="icon-ok bigger-110"></i>
+                                        发送
+                                    </button>
+
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" type="reset">
+                                        <i class="icon-undo bigger-110"></i>
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div><!-- /.col -->
+                </div>
+
+                <!-- /.row -->
+            </div>
+            <!-- /.page-content -->
+        </div>
+        <!-- /.main-content -->
+
+    </div>
+    <!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up"
+       class="btn-scroll-up btn btn-sm btn-inverse"> <i
+            class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<!-- /.main-container -->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+
+<script th:src="@{~/v3/assets/js/chosen.jquery.min.js}"></script>
+<script th:src="@{~/v3/assets/js/bootbox.min.js}"></script>
+<script th:replace="pages/tpl/foot::footer"></script>
+<script th:src="@{~/v3/js/jquery.jsonEdit.js}"></script>
+
+<script type="text/javascript">
+
+    function doSend() {
+
+        var methodKey = $("input[name='rdMethodKey']:checked").val();
+        var json = $("#txtParams").val();
+
+        if (null == providerKey || providerKey.length <= 0) {
+            return;
+        }
+        if (null == json || json.length <= 0) {
+            return;
+        }
+        var params = {"providerKey": providerKey, "json": json, "methodKey": methodKey};
+        Nora.Ajax("/doe/dubbo/doSend", params, function (data) {
+
+            if (data.success && null != data.data && data.data.length > 0) {
+
+                // on success
+                $("#txtResult").val(data.data); // clear
+
+            } else {
+                // on fail
+                bootbox.alert(null == data ? "操作失败！" : data.msg);
+            }
+
+        }, function (data) {
+            // on error
+            bootbox.alert(null == data ? "操作异常!" : data.msg);
+        });
+
+    }
+
+    function doPrepareMethodParams(json) {
+        $("#txtParams").val(json);
+    }
+
+    function doListMethods(methodKey, methodText) {
+
+        var html = Nora.Util.StringUtil.format($("#tplMethod").html(), methodKey, methodText);
+        $("#txtMethods").html(html);
+    }
+
+    function doReset() {
+
+        $("#txtMethods").html(""); // clear
+        $("#cboProviders").html(""); // clear
+    }
+
+    jQuery(function($) {
+
+        var grid_selector = "#grid-table";
+        var pager_selector = "#grid-pager";
+
+        jQuery(grid_selector).jqGrid({
+            url : "/doe/case/doList",
+            datatype : "json",
+            height : 300,
+            colNames : [ '流水号', '插入时间', '用例名称', '提供者地址', '接口名称', '方法名称', 'providerKey', 'methodKey', 'json', '用例描述'],
+            colModel:[
+                {name: 'caseId', index: 'caseId', width: 50, editable: false, hidden: false},
+                {name: 'insertTime', index: 'insertTime', width: 80, editable: false, formatter: JGridUtils.dateTimeFormat},
+                {name: 'caseName', index: 'caseName',  editable: false, edittype: "text"},
+                {name: 'address', index: 'address', width: 80,  editable: false},
+                {name: 'interfaceName', index: 'interfaceName',  editable: false, edittype: "text"},
+                {name: 'methodText', index: 'methodText', hidden: false, edittype: "text"},
+                {name: 'providerKey', index: 'providerKey',  hidden: true, edittype: "text"},
+                {name: 'methodKey', index: 'methodKey', hidden: true, edittype: "text"},
+                {name: 'json', index: 'json', hidden: true, edittype: "text"},
+                {name: 'caseDesc', index: 'caseDesc', hidden: true, editable: false, edittype: "text"}
+            ],
+
+            viewrecords : true,
+            rowNum : 500,
+            rowList : [ 100, 200, 300 ],
+            pager : pager_selector,
+            altRows : true,
+            //toppager: true,
+            multiselect : false,
+            //multikey: "ctrlKey",
+            multiboxonly : true,
+            loadComplete : function() {
+                var table = this;
+                setTimeout(function() {
+                    JGridUtils.styleCheckbox(table);
+                    JGridUtils.updateActionIcons(table);
+                    JGridUtils.updatePagerIcons(table);
+                    JGridUtils.enableTooltips(table);
+                }, 0);
+            },
+            onSelectRow : function(ids) {
+                if( ids != null){
+                    var methodText = jQuery(grid_selector).jqGrid('getRowData', ids)['methodText'];
+                    var json = jQuery(grid_selector).jqGrid('getRowData', ids)['json'];
+                    methodKey = jQuery(grid_selector).jqGrid('getRowData', ids)['methodKey'];
+                    providerKey = jQuery(grid_selector).jqGrid('getRowData', ids)['providerKey'];
+                    doListMethods(methodKey, methodText);
+                    doPrepareMethodParams(json);
+                }
+            },
+            autowidth : true
+        });
+
+        // 渲染导航
+        JGridUtils.renderNav(grid_selector, pager_selector);
+
+    });
+</script>
+
+</body>
+</html>

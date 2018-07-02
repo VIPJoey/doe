@@ -1,0 +1,80 @@
+/*
+ * Copyright (c) 2010-2020 Founder Ltd. All Rights Reserved.
+ *
+ * This software is the confidential and proprietary information of
+ * Founder. You shall not disclose such Confidential Information
+ * and shall use it only in accordance with the terms of the agreements
+ * you entered into with Founder.
+ *
+ */
+
+package com.mmc.dubbo.doe.service;
+
+import com.mmc.dubbo.doe.dto.PomDTO;
+import com.mmc.dubbo.doe.dto.ResultDTO;
+import com.mmc.dubbo.doe.model.PomModel;
+import org.xml.sax.SAXException;
+
+import javax.validation.constraints.NotNull;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.List;
+
+/**
+ * @author Joey
+ * @date 2018/6/17 9:41
+ */
+public interface PomService {
+
+    /**
+     * parse pom, download jar, push message to redis.
+     *
+     * @param dto
+     * @return
+     */
+    ResultDTO<PomDTO> invoke(PomDTO dto) throws Exception;
+
+    /**
+     * do parse pom.
+     *
+     * @param xml
+     * @return
+     * @throws IOException
+     * @throws SAXException
+     */
+    List<PomModel> parsePom(@NotNull String xml) throws IOException, SAXException;
+
+    /**
+     * do append content to the end of pom.xml.
+     *
+     * @param models
+     * @param pomXml
+     * @throws Exception
+     */
+    void appendPom(List<PomModel> models, @NotNull String pomXml) throws Exception;
+
+    /**
+     * get the real time message from redis.
+     *
+     * @param requestId
+     * @return
+     */
+    ResultDTO<String> getRealTimeMsg(@NotNull String requestId);
+
+    /**
+     * load jars.
+     *
+     * @param libPath the lib full path.
+     * @return
+     */
+    ResultDTO<String> loadJars(String libPath) throws NoSuchMethodException, MalformedURLException;
+
+    /**
+     * list all dependency.
+     *
+     * @param dto
+     * @return
+     */
+    List<PomModel> listJars(PomDTO dto) throws ParserConfigurationException, IOException, SAXException;
+}

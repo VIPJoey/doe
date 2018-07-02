@@ -1,0 +1,33 @@
+<div th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
+
+        <!-- ace settings handler -->
+        <script th:src="@{~/v3/assets/js/ace-extra.min.js}"></script>
+
+
+        <script type="text/javascript">
+            if("ontouchend" in document) document.write("<script src='statics/v3/assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+        </script>
+        <script th:src="@{~/v3/assets/js/bootstrap.min.js}"></script>
+        <script th:src="@{~/v3/assets/js/typeahead-bs2.min.js}"></script>
+
+
+        <!-- page specific plugin scripts -->
+
+        <script th:src="@{~/v3/assets/js/date-time/bootstrap-datepicker.min.js}"></script>
+        <script th:src="@{~/v3/assets/js/jqGrid/jquery.jqGrid.src.js}"></script>
+        <script th:src="@{~/v3/assets/js/jqGrid/i18n/grid.locale-en.js}"></script>
+
+        <!-- ace scripts -->
+
+        <script th:src="@{~/v3/assets/js/ace-elements.min.js}"></script>
+        <script th:src="@{~/v3/assets/js/ace.min.js}"></script>
+
+        <!-- 自定义的jgrid工具类 -->
+        <script th:src="@{~/v3/js/JGridUtils.js}"></script>
+        <!-- 弹框工具 -->
+        <script th:src="@{~/v3/assets/js/bootbox.min.js}"></script>
+        <!-- 共用类 -->
+        <script th:src="@{~/v3/js/core.js}"></script>
+        <script th:src="@{~/v3/js/Nora.js}"></script>
+
+</div>
