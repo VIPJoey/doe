@@ -54,7 +54,7 @@ public class ProcessClient extends Thread {
         // make the command depends on the OS.
         String command = makeCommand(pomXml);
 
-        log.debug("begin to exec the command {}", command);
+        log.info("begin to exec the command {}", command);
         Process ps = null;
         try {
             ps = Runtime.getRuntime().exec(command);
@@ -103,7 +103,7 @@ public class ProcessClient extends Thread {
     private String makeCommand(String pomXml) {
 
         if (isOSLinux()) {
-            return StringUtil.format("/bin/bash -c  mvn dependency:copy-dependencies -DoutputDirectory=lib -DincludeScope=compile -f {}", pomXml);
+            return StringUtil.format("/bin/bash -c  mvn dependency:copy-dependencies -DoutputDirectory={} -DincludeScope=compile -f {}", libPath, pomXml);
         } else {
             return StringUtil.format("cmd /c  mvn dependency:copy-dependencies -DoutputDirectory=lib -DincludeScope=compile -f {}", pomXml);
         }

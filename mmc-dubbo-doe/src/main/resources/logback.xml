@@ -33,6 +33,8 @@
         </rollingPolicy>
     </appender>
 
+    <!-- ignore framework's log -->
+    <logger name="io.lettuce.core.protocol" value="ERROR" />
 
     <!-- level: FATAL,ERROR,WARN,INFO,DEBUG,TRACE -->
     <root>

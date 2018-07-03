@@ -5,14 +5,14 @@
     <title>Doe</title>
     <!-- 导入头部 ,统一引用那些静态资源  -->
     <link rel="stylesheet" th:href="@{~/v3/assets/css/chosen.css}" />
-    <script th:replace="pages/tpl/head::header"></script>
+    <script th:replace="/pages/tpl/head::header"></script>
     <style>
         .scroll { overflow-y: scroll; overflow-x: scroll;}
     </style>
 </head>
 <body>
 
-<div th:replace="pages/tpl/top::topper"></div>
+<div th:replace="/pages/tpl/top::topper"></div>
 
 
 <div class="main-container" id="main-container">
@@ -25,10 +25,10 @@
 
     <div class="main-container-inner">
 
-        <div th:replace="pages/tpl/left::lefter"></div>
+        <div th:replace="/pages/tpl/left::lefter"></div>
 
         <div class="main-content">
-            <div th:replace="pages/tpl/bread::breader"></div>
+            <div th:replace="/pages/tpl/bread::breader"></div>
 
             <div class="page-content">
                 <div class="page-header">
@@ -84,7 +84,7 @@
 
 <script th:src="@{~/v3/assets/js/chosen.jquery.min.js}"></script>
 <script th:src="@{~/v3/assets/js/bootbox.min.js}"></script>
-<script th:replace="pages/tpl/foot::footer"></script>
+<script th:replace="/pages/tpl/foot::footer"></script>
 
 <script type="text/javascript">
 

@@ -8,6 +8,7 @@ spring:
     encoding: utf-8
     mode: HTML5
     prefix: classpath:/templates
+    suffix: .html
   redis:
       # 数据库索引
       database: 0
