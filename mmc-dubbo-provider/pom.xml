@@ -4,15 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-	<groupId>com.mmc</groupId>
-	<artifactId>mmc-dubbo</artifactId>
-	<version>1.0.0-RELEASE</version>
-  </parent>
-  
+    <groupId>mmc-dubbo</groupId>
     <artifactId>provider</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <name>mmc-dubbo-provider</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,7 +32,7 @@
         <dependency>
             <groupId>mmc-dubbo</groupId>
             <artifactId>api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-RELEASE</version>
         </dependency>
 
 
