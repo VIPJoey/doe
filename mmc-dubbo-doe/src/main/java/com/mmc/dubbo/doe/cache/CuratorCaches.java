@@ -9,7 +9,9 @@
  */
 package com.mmc.dubbo.doe.cache;
 
+import com.mmc.dubbo.doe.exception.DoeException;
 import com.mmc.dubbo.doe.handler.CuratorHandler;
+import com.mmc.dubbo.doe.util.StringUtil;
 
 import javax.validation.constraints.NotNull;
 import java.util.Map;
@@ -31,16 +33,29 @@ public class CuratorCaches {
 
         if (null == client) {
 
-            // split host and port
-            String[] pairs = conn.replace("：", ":").split(":");
-            String host = pairs[0];
-            String port = pairs[1];
 
-            client = new CuratorHandler("zookeeper", host, Integer.valueOf(port));
-            // connect to zk
-            client.doConnect();
-            // cache client for reuse
-            map.putIfAbsent(conn, client);
+            try {
+                // split host and port
+                String[] pairs = conn.replace("：", ":").split(":");
+                String host = pairs[0];
+                String port = pairs[1];
+
+                client = new CuratorHandler("zookeeper", host, Integer.valueOf(port));
+                // connect to zk
+                client.doConnect();
+                // cache client for reuse
+                if (client.isAvailable()) {
+                    map.putIfAbsent(conn, client);
+                }
+
+            } catch(Exception e) {
+
+                throw new DoeException(StringUtil.format("can't connect to {}, {}", conn, e.getMessage()));
+
+            } finally {
+
+                client.close();
+            }
         }
 
         return client;

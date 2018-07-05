@@ -24,12 +24,14 @@ import com.mmc.dubbo.doe.context.ResponseDispatcher;
 import com.mmc.dubbo.doe.dto.ConnectDTO;
 import com.mmc.dubbo.doe.dto.ResultDTO;
 import com.mmc.dubbo.doe.dto.UrlModelDTO;
+import com.mmc.dubbo.doe.exception.DoeException;
 import com.mmc.dubbo.doe.handler.CuratorHandler;
 import com.mmc.dubbo.doe.model.MethodModel;
 import com.mmc.dubbo.doe.model.ServiceModel;
 import com.mmc.dubbo.doe.model.UrlModel;
 import com.mmc.dubbo.doe.service.ConnectService;
 import com.mmc.dubbo.doe.util.ParamUtil;
+import com.mmc.dubbo.doe.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -92,6 +94,10 @@ public class ConnectServiceImpl implements ConnectService {
         // get client
         CuratorHandler client = CuratorCaches.getHandler(connect.getConn());
 
+        if (null == client) {
+            throw new DoeException("the cache is validate, please reconnect to zk againt.");
+        }
+
         List<UrlModel> providers = client.getProviders(connect.getServiceName());
 
         // throw fast json error if you don't convert simple pojo
@@ -121,6 +127,10 @@ public class ConnectServiceImpl implements ConnectService {
 
         // get client
         CuratorHandler client = CuratorCaches.getHandler(conn);
+
+        if (null == client || !client.isAvailable()) {
+            throw new DoeException(StringUtil.format("can't connect to {}", conn));
+        }
 
         // get providers
         List<ServiceModel> list = client.getInterfaces();

@@ -89,4 +89,12 @@ public class CuratorHandler {
         return MethodCaches.cache(interfaceName, methods); // 缓存一份，方便下次调用
 
     }
+
+    public void close() {
+        registry.destroy();
+    }
+
+    public boolean isAvailable() {
+        return registry.isAvailable();
+    }
 }
