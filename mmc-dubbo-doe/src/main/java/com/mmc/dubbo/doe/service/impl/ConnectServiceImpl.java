@@ -128,7 +128,7 @@ public class ConnectServiceImpl implements ConnectService {
         // get client
         CuratorHandler client = CuratorCaches.getHandler(conn);
 
-        if (null == client || !client.isAvailable()) {
+        if (!client.isAvailable()) {
             throw new DoeException(StringUtil.format("can't connect to {}", conn));
         }
 

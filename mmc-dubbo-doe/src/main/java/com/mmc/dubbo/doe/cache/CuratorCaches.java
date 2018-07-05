@@ -43,18 +43,17 @@ public class CuratorCaches {
                 client = new CuratorHandler("zookeeper", host, Integer.valueOf(port));
                 // connect to zk
                 client.doConnect();
-                // cache client for reuse
+                // async connecting, so we should wait a few second.
+                Thread.sleep(1000);
                 if (client.isAvailable()) {
+                    // cache client for reuse
                     map.putIfAbsent(conn, client);
+                } else {
+                    client.close();
                 }
 
             } catch(Exception e) {
-
                 throw new DoeException(StringUtil.format("can't connect to {}, {}", conn, e.getMessage()));
-
-            } finally {
-
-                client.close();
             }
         }
 

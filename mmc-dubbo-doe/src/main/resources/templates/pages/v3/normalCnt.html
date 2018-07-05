@@ -53,7 +53,12 @@
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-8">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control search-query" placeholder="127.0.0.1:2181" id="txtConnect" autocomplete="true"/>
+                                                    <select class="chosen-select width-95" id="txtConnect" data-placeholder="127.0.0.1:2181">
+                                                        <option value="127.0.0.1:2181">127.0.0.1:2181</option>
+                                                        <option value="10.204.58.154:2181">10.204.58.154:2181</option>
+                                                        <option value="10.204.49.97:2181">10.204.49.97:2181</option>
+                                                        <option value="10.204.56.84:2181">10.204.56.84:2181</option>
+                                                    </select>
                                                     <span class="input-group-btn">
 																		<button type="button" class="btn btn-purple btn-sm" onclick="doConnect();">
 																			连接
@@ -386,32 +391,35 @@
         var conn = $("#txtConnect").val();// 这就是selected的值
 
         var params = {"conn": conn, "serviceName": serviceName};
+        var cboProvider = $("#cboProviders");
         Nora.Ajax("/doe/dubbo/doListProviders", params, function (data) {
 
             if (data.success && null != data.data && data.data.length > 0) {
 
                 // on success
-                $("#cboProviders").html("<option value=\"\">&nbsp;</option>"); // clear
+                cboProvider.html("<option value=\"\">&nbsp;</option>"); // clear
                 for (var i = 0; i < data.data.length; i++) {
 
                     var d = data.data[i];
 
                     var html = Nora.Util.StringUtil.format("<option value='{}'>{}:{}</option>", d.key, d.host, d.port);
-                    $("#cboProviders").append(html);
+                    cboProvider.append(html);
                 }
 
-                $("#cboProviders").chosen();
-                $("#cboProviders").trigger("chosen:updated"); // 渲染
+                cboProvider.chosen();
+                cboProvider.trigger("chosen:updated"); // 渲染
 
             } else {
                 // on fail
-                $("#cboProviders").html(""); // clear
+                cboProvider.html("<option value=\"\">&nbsp;</option>"); // clear
+                cboProvider.chosen();
+                cboProvider.trigger("chosen:updated"); // 渲染
                 bootbox.alert(data.msg);
             }
 
         }, function (data) {
             // on error
-            $("#cboProviders").html(""); // clear
+            cboProvider.html(""); // clear
             bootbox.alert(data.msg);
         });
     }
@@ -425,12 +433,19 @@
         }
 
         var params = {"conn": conn};
+        var cboInterfaces = $("#cboInterfaces");
+        // 绑定事件
+        cboInterfaces.change(function () {
+            var serviceName = $(this).children('option:selected').val();// 这就是selected的值
+            doReset();
+            doListProviders(serviceName);
+        });
         Nora.Ajax("/doe/dubbo/doConnect", params, function (data) {
 
             if (data.success && null != data.data && data.data.length > 0) {
 
                 // on success
-                $("#cboInterfaces").html("<option value=\"\">&nbsp;</option>"); // clear
+                cboInterfaces.html("<option value=\"\">&nbsp;</option>"); // clear
                 var keyWordSearch = "";
                 var wholeWordSearch = "";
                 for (var i = 0; i < data.data.length; i++) {
@@ -447,23 +462,19 @@
                 }
 
                 if (wholeWordSearch.length > 0) {
-                    $("#cboInterfaces").append(wholeWordSearch);
-                    $("#cboInterfaces").append(keyWordSearch);
+                    cboInterfaces.append(wholeWordSearch);
+                    cboInterfaces.append(keyWordSearch);
                 }
 
-                $("#cboInterfaces").chosen(); // 渲染
-                $("#cboInterfaces").trigger("chosen:updated"); // 渲染
+                cboInterfaces.chosen(); // 渲染
+                cboInterfaces.trigger("chosen:updated"); // 渲染
 
-                // 绑定事件
-                $("#cboInterfaces").change(function () {
-                    var serviceName = $(this).children('option:selected').val();// 这就是selected的值
-                    // serviceName = serviceName.replace(/\s/g, ".");
-                    doReset();
-                    doListProviders(serviceName);
-                });
 
             } else {
                 // on fail
+                cboInterfaces.html(""); // clear
+                cboInterfaces.chosen(); // 渲染
+                cboInterfaces.trigger("chosen:updated"); // 渲染
                 bootbox.alert(data.msg);
             }
 
@@ -513,9 +524,14 @@
         });
     }
 
+    function initConnection() {
+
+        var txtConnect = $("#txtConnect");
+        txtConnect.chosen(); // 渲染
+    }
     jQuery(function($) {
 
-        $("#txtConnect").val("127.0.0.1:2181");
+        initConnection();
 
         resultEditor = $("#txtResult").jsonEdit({
             debug: false
