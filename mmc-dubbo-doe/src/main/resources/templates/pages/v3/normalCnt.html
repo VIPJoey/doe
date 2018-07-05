@@ -397,10 +397,11 @@
                     var d = data.data[i];
 
                     var html = Nora.Util.StringUtil.format("<option value='{}'>{}:{}</option>", d.key, d.host, d.port);
-                    $(html).appendTo("#cboProviders");
+                    $("#cboProviders").append(html);
                 }
 
-                $("#cboProviders").chosen(); // 渲染
+                $("#cboProviders").chosen();
+                $("#cboProviders").trigger("chosen:updated"); // 渲染
 
             } else {
                 // on fail
@@ -451,11 +452,14 @@
                 }
 
                 $("#cboInterfaces").chosen(); // 渲染
+                $("#cboInterfaces").trigger("chosen:updated"); // 渲染
+
                 // 绑定事件
                 $("#cboInterfaces").change(function () {
                     var serviceName = $(this).children('option:selected').val();// 这就是selected的值
-                    doListProviders(serviceName);
+                    // serviceName = serviceName.replace(/\s/g, ".");
                     doReset();
+                    doListProviders(serviceName);
                 });
 
             } else {
