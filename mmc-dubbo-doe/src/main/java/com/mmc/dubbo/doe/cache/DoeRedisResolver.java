@@ -31,6 +31,9 @@ public class DoeRedisResolver implements RedisResolver {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    public RedisTemplate<String, Object> getRedisTemplate() {
+        return redisTemplate;
+    }
 
     //=============================common============================
 
@@ -214,7 +217,7 @@ public class DoeRedisResolver implements RedisResolver {
     //============================set=============================
 
     @Override
-    public Set<Object> sGet(String key) {
+    public Set<Object> sMembers(String key) {
         try {
             return redisTemplate.opsForSet().members(key);
         } catch (Exception e) {
@@ -234,7 +237,7 @@ public class DoeRedisResolver implements RedisResolver {
     }
 
     @Override
-    public long sSet(String key, Object... values) {
+    public long sAdd(String key, Object... values) {
         try {
             return redisTemplate.opsForSet().add(key, values);
         } catch (Exception e) {
@@ -266,7 +269,7 @@ public class DoeRedisResolver implements RedisResolver {
     }
 
     @Override
-    public long setRemove(String key, Object... values) {
+    public long sRem(String key, Object... values) {
         try {
             Long count = redisTemplate.opsForSet().remove(key, values);
             return count;

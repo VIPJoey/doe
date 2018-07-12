@@ -1,0 +1,22 @@
+[
+  {
+    "registryKey": "127.0.0.1:2181",
+    "registryDesc": "localhost -- 127.0.0.1:2181"
+  },
+  {
+    "registryKey": "10.204.58.157:2181",
+    "registryDesc": "terminal测试sit1 -- 10.204.58.157:2181"
+  },
+  {
+    "registryKey": "10.204.52.147:2181",
+    "registryDesc": "terminal测试sit2 -- 10.204.52.147:2181"
+  },
+  {
+    "registryKey": "10.204.56.83:2181",
+    "registryDesc": "terminal测试sit3 -- 10.204.56.83:2181"
+  },
+  {
+    "registryKey": "10.204.49.161:2181",
+    "registryDesc": "terminal开发dev -- 10.204.49.161:2181"
+  }
+]

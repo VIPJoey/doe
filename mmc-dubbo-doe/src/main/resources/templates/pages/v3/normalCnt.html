@@ -54,17 +54,14 @@
                                             <div class="col-xs-12 col-sm-8">
                                                 <div class="input-group">
                                                     <select class="chosen-select width-95" id="txtConnect" data-placeholder="127.0.0.1:2181">
-                                                        <option value="127.0.0.1:2181">127.0.0.1:2181</option>
-                                                        <option value="10.204.58.154:2181">10.204.58.154:2181</option>
-                                                        <option value="10.204.49.97:2181">10.204.49.97:2181</option>
-                                                        <option value="10.204.56.84:2181">10.204.56.84:2181</option>
+
                                                     </select>
                                                     <span class="input-group-btn">
-																		<button type="button" class="btn btn-purple btn-sm" onclick="doConnect();">
-																			连接
-																			<!--<i class="icon-search icon-on-right bigger-110"></i>-->
-																		</button>
-																	</span>
+                                                        <button type="button" class="btn btn-purple btn-sm" onclick="doConnect();">
+                                                            连接
+                                                            <!--<i class="icon-search icon-on-right bigger-110"></i>-->
+                                                        </button>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -312,12 +309,12 @@
 
             } else {
                 // on fail
-                bootbox.alert(null == data ? "操作失败！" : data.msg);
+                bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
             }
 
         }, function (data) {
             // on error
-            bootbox.alert(null == data ? "操作异常!" : data.msg);
+            bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
         });
 
     }
@@ -340,12 +337,12 @@
 
                 } else {
                     // on fail
-                    bootbox.alert(null == data ? "操作失败！" : data.msg);
+                    bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
                 }
 
             }, function (data) {
                 // on error
-                bootbox.alert(null == data ? "操作异常!" : data.msg);
+                bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
             });
         });
     }
@@ -515,19 +512,45 @@
 
             } else {
                 // on fail
-                bootbox.alert(null == data ? "操作失败！" : data.msg);
+                bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
             }
 
         }, function (data) {
             // on error
-            bootbox.alert(null == data ? "操作异常!" : data.msg);
+            bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
         });
     }
 
     function initConnection() {
 
         var txtConnect = $("#txtConnect");
-        txtConnect.chosen(); // 渲染
+        var params = {};
+        Nora.Ajax("/doe/zk/doListRegistry", params, function (data) {
+
+            if (data.success && null != data.data && data.data.length > 0) {
+
+                // on success
+                var html = "";
+                for (var i = 0; i < data.data.length; i++) {
+
+                    var d = data.data[i];
+
+                    // for whole input search
+                    html += Nora.Util.StringUtil.format("<option value='{}'>{}</option>", d.registryKey, d.registryDesc);
+                }
+                txtConnect.append(html);
+                txtConnect.chosen(); // 渲染
+
+            } else {
+                // on fail
+                bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
+            }
+
+        }, function (data) {
+            // on error
+            bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
+        });
+
     }
     jQuery(function($) {
 

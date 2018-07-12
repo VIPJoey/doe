@@ -73,7 +73,7 @@ public class PomController {
 
         log.info("PomController.doParse({})", pom);
 
-        ResultDTO<PomDTO> resultDTO = null;
+        ResultDTO<PomDTO> resultDTO;
 
         try {
 
@@ -88,6 +88,31 @@ public class PomController {
             dto.setPom(pom);
 
             resultDTO = pomService.invoke(dto);
+
+        } catch(Exception e) {
+
+            resultDTO = ResultDTO.createExceptionResult(e, PomDTO.class);
+        }
+
+        return resultDTO;
+
+    }
+
+    /**
+     * invoke the mvn command to download the jars again.
+     *
+     * @return
+     */
+    @RequestMapping("/doReparse")
+    public ResultDTO<PomDTO> doReparse() {
+
+        log.info("PomController.doReparse({})");
+
+        ResultDTO<PomDTO> resultDTO;
+
+        try {
+
+            resultDTO = pomService.invoke();
 
         } catch(Exception e) {
 

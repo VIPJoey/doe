@@ -28,6 +28,15 @@ import java.util.List;
 public interface PomService {
 
     /**
+     * download jar, push message to redis.
+     * <br>
+     *     it's a backdoor.
+     *
+     * @return
+     */
+    ResultDTO<PomDTO> invoke() throws Exception;
+
+    /**
      * parse pom, download jar, push message to redis.
      *
      * @param dto

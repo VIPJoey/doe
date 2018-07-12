@@ -63,7 +63,7 @@ public class StreamHandler implements Runnable {
             // auto expire
             String key = StringUtil.format(Const.DOE_DOWNLOAD_JAR_MESSAGE, requestId);
             redisResolver.rPush(key, "");
-            redisResolver.expire(key, 10 * 60); // ten minute
+            redisResolver.expire(key, 15 * 60); // ten minute
 
             String successLine;
             String errorLine = null;

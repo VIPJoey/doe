@@ -40,5 +40,8 @@ public class Const {
      * use case key.
      */
     public static final String DOE_CASE_KEY = "doe:case";
-
+    /**
+     * all config of zk address key.
+     */
+    public static final String DOE_REGISTRY_KEY = "doe:registry:list";
 }

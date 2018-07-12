@@ -10,6 +10,8 @@
 
 package com.mmc.dubbo.doe.cache;
 
+import org.springframework.data.redis.core.RedisTemplate;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +22,13 @@ import java.util.concurrent.TimeUnit;
  * @date 2018/6/17 18:13
  */
 public interface RedisResolver {
+
+    /**
+     * 获取模板.
+     *
+     * @return
+     */
+    RedisTemplate<String, Object> getRedisTemplate();
 
     /**
      * 指定缓存失效时间
@@ -207,7 +216,7 @@ public interface RedisResolver {
      * @param key 键
      * @return
      */
-    Set<Object> sGet(String key);
+    Set<Object> sMembers(String key);
 
     /**
      * 根据value从一个set中查询,是否存在
@@ -225,7 +234,7 @@ public interface RedisResolver {
      * @param values 值 可以是多个
      * @return 成功个数
      */
-    long sSet(String key, Object... values);
+    long sAdd(String key, Object... values);
 
     /**
      * 将set数据放入缓存
@@ -252,7 +261,7 @@ public interface RedisResolver {
      * @param values 值 可以是多个
      * @return 移除的个数
      */
-    long setRemove(String key, Object... values);
+    long sRem(String key, Object... values);
 
     /**
      * 获取list缓存的内容

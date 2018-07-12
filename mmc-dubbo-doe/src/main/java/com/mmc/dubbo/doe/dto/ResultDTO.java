@@ -33,12 +33,12 @@ public class ResultDTO<T> {
     private T data; // 附带数据
     private Throwable exception; // 异常
 
-    public static <T> ResultDTO<T> createExceptionResult(Exception e, Class<T> clazz) {
+    public static <T> ResultDTO<T> createExceptionResult(Throwable e, Class<T> clazz) {
 
         return createExceptionResult("", e, clazz);
     }
 
-    public static <T> ResultDTO<T> createExceptionResult(String msg, Exception e, Class<T> clazz) {
+    public static <T> ResultDTO<T> createExceptionResult(String msg, Throwable e, Class<T> clazz) {
 
         ResultDTO<T> ret = new ResultDTO<>();
         ret.setCode(DEFAULT_EXCEPTION_CODE);

@@ -78,6 +78,37 @@ public class PomServiceImpl implements PomService {
     private RedisResolver redisResolver;
 
     @Override
+    public ResultDTO<PomDTO> invoke() {
+
+        PomDTO dto = new PomDTO();
+        ProcessClient processClient = new ProcessClient(dto, redisResolver, pomXml, libPath);
+
+        // just can only invoke one task to downloaded the jars.
+        // we can invoke more task after we have finished all code actually.
+        if (processClient.isRunning()) {
+            return ResultDTO.createErrorResult("some task was already running at background, please try again for a few minutes later.", PomDTO.class);
+        }
+
+        try {
+
+            locker.lock();
+
+            // download jars asynchronously
+            log.info("fork another thread to download jars.");
+            TaskContainer.getTaskContainer().execute(processClient);
+            log.info("success fork another thread to download jars.");
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            locker.unlock();
+        }
+
+        // return the success signal and redirect another url to get real time information.
+        return ResultDTO.createSuccessResult("the download task is running at background, please wait...", dto, PomDTO.class);
+    }
+
+    @Override
     public ResultDTO<PomDTO> invoke(@NotNull PomDTO dto) throws Exception {
 
         ProcessClient processClient = new ProcessClient(dto, redisResolver, pomXml, libPath);
