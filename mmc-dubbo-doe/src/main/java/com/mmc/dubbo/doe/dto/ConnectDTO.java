@@ -19,7 +19,7 @@ import lombok.Data;
 public class ConnectDTO extends BaseDTO {
 
     /**
-     * zk address.
+     * ip and port.
      */
     private String conn;
     /**

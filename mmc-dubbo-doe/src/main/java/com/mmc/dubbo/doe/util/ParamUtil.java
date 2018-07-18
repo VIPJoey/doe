@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mmc.dubbo.doe.exception.DoeException;
+import com.mmc.dubbo.doe.model.PointModel;
 
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Method;
@@ -83,5 +84,21 @@ public class ParamUtil {
         Object[] array = PojoUtils.realize(list.toArray(), invokeMethod.getParameterTypes(), invokeMethod.getGenericParameterTypes());
 
         return array;
+    }
+
+    /**
+     * parse ip and port from the conn.
+     *
+     * @param conn
+     * @return
+     */
+    public static PointModel parsePointModel(@NotNull String conn) {
+
+        // split host and port
+        String[] pairs = conn.replace("：", ":").split(":");
+        String host = pairs[0];
+        String port = pairs[1];
+
+        return new PointModel(host, Integer.valueOf(port));
     }
 }

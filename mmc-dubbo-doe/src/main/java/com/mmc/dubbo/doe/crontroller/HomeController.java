@@ -23,13 +23,19 @@ public class HomeController {
     @RequestMapping("/index")
     public String index() {
 
-        return "/pages/v3/normalCnt.html";
+        return "/pages/v3/easyCnt.html";
     }
 
     @RequestMapping("/normalCnt")
     public String openNormalPage() {
 
         return "/pages/v3/normalCnt.html";
+    }
+
+    @RequestMapping("/caseCnt")
+    public String openCasePage() {
+
+        return "/pages/v3/caseCnt.html";
     }
 
     @RequestMapping("/easyCnt")

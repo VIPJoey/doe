@@ -41,58 +41,23 @@
 
                         <div class="row">
 
-                            <div class="col-xs-12 col-sm-4">
+                            <div class="col-xs-12">
+                                <h3 class="header smaller lighter blue">保存的用例</h3>
+                                <div class="table-responsive">
 
-                                <div class="widget-box">
-                                    <div class="widget-header">
-                                        <h4>提供者地址</h4>
-
-                                        <span class="widget-toolbar">
-
-														<a href="#" data-action="collapse">
-															<i class="icon-chevron-up"></i>
-														</a>
-
-														<a href="#" data-action="close">
-															<i class="icon-remove"></i>
-														</a>
-													</span>
-                                    </div>
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-                                            <textarea class="form-control" id="txtConnect" rows="5"
-                                                      placeholder="127.0.0.1:20880"></textarea>
-                                        </div>
-                                    </div>
+                                    <table id="grid-table"></table>
+                                    <div id="grid-pager"></div>
                                 </div>
+
+
                             </div>
+                        </div>
 
-                            <div class="col-xs-12 col-sm-4">
-                                <div class="widget-box">
-                                    <div class="widget-header">
-                                        <h4>接口名称</h4>
+                        <div class="hr hr-24"></div>
 
-                                        <span class="widget-toolbar">
 
-														<a href="#" data-action="collapse">
-															<i class="icon-chevron-up"></i>
-														</a>
+                        <div class="row">
 
-														<a href="#" data-action="close">
-															<i class="icon-remove"></i>
-														</a>
-													</span>
-                                    </div>
-
-                                    <div class="widget-body">
-                                        <div class="widget-main">
-
-                                            <textarea class="form-control" id="txtInterfaces" rows="5"
-                                                      placeholder="com.mmc.dubbo.api.user.UserService"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- /span -->
                             <div class="col-xs-12 col-sm-4">
                                 <div class="widget-box">
                                     <div class="widget-header">
@@ -113,19 +78,25 @@
                                     <div class="widget-body">
                                         <div class="widget-main">
 
-                                            <textarea class="form-control" id="txtMethods" rows="5"
-                                                      placeholder="getCurrentById"></textarea>
+                                            <div class="row-fluid" style="height: 300px; overflow-scrolling: auto;">
+                                                <div class="control-group" id="txtMethods">
+
+
+
+                                                </div>
+                                                <div style="display:none;" id="tplMethod">
+                                                    <div class="radio">
+                                                        <label>
+                                                            <input name="rdMethodKey" type="radio" class="ace" value="{}" checked="true"/>
+                                                            <span class="lbl" style="font-size: 10px;"> {} </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div><!-- /span -->
-
-                        </div>
-
-                        <div class="hr hr-24"></div>
-
-                        <div class="row">
-
 
                             <div class="col-xs-12 col-sm-4">
                                 <div class="widget-box">
@@ -230,25 +201,17 @@
 
     function doSend() {
 
-        var conn = $("#txtConnect").val();
-        var serviceName = $("#txtInterfaces").val();
-        var methodName = $("#txtMethods").val();
+        var methodKey = $("input[name='rdMethodKey']:checked").val();
         var json = $("#txtParams").val();
 
-        if (null == conn || conn.length <= 0) {
-            return;
-        }
-        if (null == serviceName || serviceName.length <= 0) {
-            return;
-        }
-        if (null == methodName || methodName.length <= 0) {
+        if (null == providerKey || providerKey.length <= 0) {
             return;
         }
         if (null == json || json.length <= 0) {
             return;
         }
-        var params = {"conn": conn, "json": json, "serviceName": serviceName, "methodName": methodName};
-        Nora.Ajax("/doe/dubbo/doSendWithTelnet", params, function (data) {
+        var params = {"providerKey": providerKey, "json": json, "methodKey": methodKey};
+        Nora.Ajax("/doe/dubbo/doSend", params, function (data) {
 
             if (data.success && null != data.data && data.data.length > 0) {
 
@@ -267,14 +230,78 @@
 
     }
 
+    function doPrepareMethodParams(json) {
+        $("#txtParams").val(json);
+    }
+
+    function doListMethods(methodKey, methodText) {
+
+        var html = Nora.Util.StringUtil.format($("#tplMethod").html(), methodKey, methodText);
+        $("#txtMethods").html(html);
+    }
+
     function doReset() {
 
-        $("#txtMethods").val(""); // clear
-        $("#txtInterfaces").val(""); // clear
+        $("#txtMethods").html(""); // clear
+        $("#cboProviders").html(""); // clear
     }
 
     jQuery(function($) {
 
+        var grid_selector = "#grid-table";
+        var pager_selector = "#grid-pager";
+
+        jQuery(grid_selector).jqGrid({
+            url : "/doe/case/doList",
+            datatype : "json",
+            height : 300,
+            colNames : [ '流水号', '插入时间', '用例名称', '提供者地址', '接口名称', '方法名称', 'providerKey', 'methodKey', 'json', '用例描述'],
+            colModel:[
+                {name: 'caseId', index: 'caseId', width: 50, editable: false, hidden: false},
+                {name: 'insertTime', index: 'insertTime', width: 80, editable: false, formatter: JGridUtils.dateTimeFormat},
+                {name: 'caseName', index: 'caseName',  editable: false, edittype: "text"},
+                {name: 'address', index: 'address', width: 80,  editable: false},
+                {name: 'interfaceName', index: 'interfaceName',  editable: false, edittype: "text"},
+                {name: 'methodText', index: 'methodText', hidden: false, edittype: "text"},
+                {name: 'providerKey', index: 'providerKey',  hidden: true, edittype: "text"},
+                {name: 'methodKey', index: 'methodKey', hidden: true, edittype: "text"},
+                {name: 'json', index: 'json', hidden: true, edittype: "text"},
+                {name: 'caseDesc', index: 'caseDesc', hidden: true, editable: false, edittype: "text"}
+            ],
+
+            viewrecords : true,
+            rowNum : 500,
+            rowList : [ 100, 200, 300 ],
+            pager : pager_selector,
+            altRows : true,
+            //toppager: true,
+            multiselect : false,
+            //multikey: "ctrlKey",
+            multiboxonly : true,
+            loadComplete : function() {
+                var table = this;
+                setTimeout(function() {
+                    JGridUtils.styleCheckbox(table);
+                    JGridUtils.updateActionIcons(table);
+                    JGridUtils.updatePagerIcons(table);
+                    JGridUtils.enableTooltips(table);
+                }, 0);
+            },
+            onSelectRow : function(ids) {
+                if( ids != null){
+                    var methodText = jQuery(grid_selector).jqGrid('getRowData', ids)['methodText'];
+                    var json = jQuery(grid_selector).jqGrid('getRowData', ids)['json'];
+                    methodKey = jQuery(grid_selector).jqGrid('getRowData', ids)['methodKey'];
+                    providerKey = jQuery(grid_selector).jqGrid('getRowData', ids)['providerKey'];
+                    doListMethods(methodKey, methodText);
+                    doPrepareMethodParams(json);
+                }
+            },
+            autowidth : true
+        });
+
+        // 渲染导航
+        JGridUtils.renderNav(grid_selector, pager_selector);
 
     });
 </script>

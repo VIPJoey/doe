@@ -9,8 +9,18 @@
  */
 package com.mmc.dubbo.doe.test;
 
+import com.alibaba.fastjson.JSON;
+import com.mmc.dubbo.doe.dto.ConnectDTO;
+import com.mmc.dubbo.doe.dto.ResultDTO;
+import com.mmc.dubbo.doe.service.TelnetService;
+import com.mmc.dubbo.doe.service.impl.TelnetServiceImpl;
 import org.apache.commons.net.telnet.TelnetClient;
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,44 +33,25 @@ import java.net.SocketException;
  */
 public class TestTelnetService {
 
+    private TelnetService telnetService = new TelnetServiceImpl();
+
     @Test
-    public void testConnect() {
+    public void testSend() {
 
-        TelnetClient telnetClient = null;
-        try {
-            telnetClient = new TelnetClient("vt200");  // 指明Telnet终端类型，否则会返回来的数据中文会乱码
-            telnetClient.setDefaultTimeout(5000); // socket延迟时间：5000ms
-            telnetClient.connect("127.0.0.1", 20880);  // 建立一个连接,默认端口是23
-            InputStream inputStream = telnetClient.getInputStream(); // 读取命令的流
-            PrintStream pStream = new PrintStream(telnetClient.getOutputStream());  // 写命令的流
+        ConnectDTO dto = new ConnectDTO();
 
-            pStream.println("\r\n");
-            pStream.println("invoke com.fcbox.edms.terminal.api.CabinetServiceFacade.getCabinetInfo({\"cabinetCode\": \"FC0231103\"})\n");
-            pStream.flush();
+        dto.setConn("127.0.0.1:30880");
+        dto.setServiceName("com.mmc.dubbo.api.user.UserService");
+        dto.setMethodName("getCurrentById");
+        dto.setJson("22222");
 
-            byte[] b = new byte[1024 * 10];
-            int size;
-            StringBuffer sBuffer = new StringBuffer(300);
+        ResultDTO<String> ret = telnetService.send(dto);
 
-            size = inputStream.read(b);
-            if (-1 != size) {
-                sBuffer.append(new String(b, 0, size, "gbk"));
-            }
-            System.out.println(sBuffer.toString());
+        Assert.assertTrue(ret.isSuccess());
 
-            pStream.println("exit"); // 写命令
-            pStream.flush(); // 将命令发送到telnet Server
-            pStream.close();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        } finally {
-
-
-        }
-
+        System.out.println(ret.getData());
     }
+
+
 
 }

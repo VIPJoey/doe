@@ -11,6 +11,8 @@ package com.mmc.dubbo.doe.cache;
 
 import com.mmc.dubbo.doe.exception.DoeException;
 import com.mmc.dubbo.doe.handler.CuratorHandler;
+import com.mmc.dubbo.doe.model.PointModel;
+import com.mmc.dubbo.doe.util.ParamUtil;
 import com.mmc.dubbo.doe.util.StringUtil;
 
 import javax.validation.constraints.NotNull;
@@ -36,11 +38,9 @@ public class CuratorCaches {
 
             try {
                 // split host and port
-                String[] pairs = conn.replace("：", ":").split(":");
-                String host = pairs[0];
-                String port = pairs[1];
+                PointModel model = ParamUtil.parsePointModel(conn);
 
-                client = new CuratorHandler("zookeeper", host, Integer.valueOf(port));
+                client = new CuratorHandler("zookeeper", model.getIp(), model.getPort());
                 // connect to zk
                 client.doConnect();
                 // async connecting, so we should wait a few second.

@@ -17,6 +17,7 @@ import com.mmc.dubbo.doe.dto.UrlModelDTO;
 import com.mmc.dubbo.doe.model.ServiceModel;
 import com.mmc.dubbo.doe.service.ClassService;
 import com.mmc.dubbo.doe.service.ConnectService;
+import com.mmc.dubbo.doe.service.TelnetService;
 import com.mmc.dubbo.doe.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,28 @@ public class DubboController {
 
     @Autowired
     private ClassService classService;
+
+    @Autowired
+    private TelnetService telnetService;
+
+    @RequestMapping("/doSendWithTelnet")
+    public ResultDTO<String> doSendWithTelnet(@NotNull ConnectDTO dto) {
+
+        log.info("DubboController.doSendWithTelnet({})", JSON.toJSONString(dto));
+
+        ResultDTO<String> resultDTO;
+
+        try {
+
+            resultDTO = telnetService.send(dto);
+
+        } catch(Exception e) {
+
+            resultDTO = ResultDTO.createExceptionResult(e, String.class);
+        }
+
+        return resultDTO;
+    }
 
     @RequestMapping("/doSend")
     public ResultDTO<String> doSend(@NotNull ConnectDTO dto) {
