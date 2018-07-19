@@ -44,6 +44,7 @@
 
 -   安装jdk
 -   安装maven，并设置好环境变量，仓库目录。
+-   进入mmc-dubbo-api目录，执行mvn clean install命令，省api的jar包。
 -   进入mmc-dubbo-doe目录，执行mvn clean install 命令，在target目录生成dubbo-doe-1.0.0-RELEASE.jar
 -   在F盘（可以任意盘）创建目录F:\app\doe
 -   把dubbo-doe-1.0.0-RELEASE.jar拷贝到F:\app\doe
