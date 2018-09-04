@@ -136,9 +136,9 @@ public class TestPomService {
     public void testInvoke() throws Exception {
 
         String xml = "\t\t<dependency>\n" +
-                "\t\t\t<groupId>com.sf.edms</groupId>\n" +
-                "\t\t\t<artifactId>dropbox-facade</artifactId>\n" +
-                "\t\t\t<version>8.0.sp5-SNAPSHOT</version>\n" +
+                "\t\t\t<groupId>mmc-dubbo</groupId>\n" +
+                "\t\t\t<artifactId>api</artifactId>\n" +
+                "\t\t\t<version>1.0-SNAPSHOT</version>\n" +
                 "\t\t</dependency>";
 
         PomDTO dto = new PomDTO();

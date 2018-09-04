@@ -9,7 +9,11 @@
  */
 package com.mmc.dubbo.doe.test;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
+
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author Joey
@@ -26,6 +30,16 @@ public class TestTime {
         System.out.println(isRestTime(LocalTime.parse("09:00")));
         System.out.println(isRestTime(LocalTime.parse("12:00")));
 
+        System.out.println("----------------------------");
+
+        System.out.println(isMoreThanDiffDay("", "", 31));
+        System.out.println(isMoreThanDiffDay("2018-07-25", "2018-07-25", 31));
+        System.out.println(isMoreThanDiffDay("2018-08-27", "2018-07-25", 31));
+        System.out.println(isMoreThanDiffDay("2018-07-10", "2018-07-25", 31));
+        System.out.println(isMoreThanDiffDay("2018-07-10", "2018-08-10", 31));
+        System.out.println(isMoreThanDiffDay("2018-07-10", "2018-08-11", 31));
+        System.out.println(isMoreThanDiffDay("2018-01-25", "2018-07-25", 31));
+        System.out.println(isMoreThanDiffDay("2018-07-10", "2018-08-25", 31));
     }
 
     private static boolean isRestTime(LocalTime now) {
@@ -47,6 +61,26 @@ public class TestTime {
 
         return open && ret;
 
+    }
+
+    /**
+     * 判断两日期字符串是否超过指定天数.
+     * @param tmStartStr 开始日期
+     * @param tmEndStr 结束日期
+     * @param days 指定天数
+     * @return 如果传入参数不为空且超过指定天数返回true，否则返回false
+     */
+    public static boolean isMoreThanDiffDay(String tmStartStr, String tmEndStr, int days) {
+        if (days <= 0) {
+            return false;
+        }
+        if (StringUtils.isEmpty(tmEndStr) || StringUtils.isEmpty(tmEndStr)) {
+            return false;
+        }
+        LocalDate startDate = LocalDate.parse(tmStartStr);
+        LocalDate endDate = LocalDate.parse(tmEndStr);
+
+        return startDate.until(endDate, ChronoUnit.DAYS) > days;
     }
 
 }
