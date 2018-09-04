@@ -9,11 +9,5 @@
     <dependencies>
 
 
-
-    <dependency>
-            <groupId>com.sf.edms</groupId>
-            <artifactId>terminal-facade</artifactId>
-            <version>8.0.sp5-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 </project>
