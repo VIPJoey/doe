@@ -33,6 +33,40 @@ public class ResultDTO<T> {
     private T data; // 附带数据
     private Throwable exception; // 异常
 
+    public static <T> ResultDTO<T> handleSuccess(String msg, T data) {
+
+        ResultDTO<T> ret = new ResultDTO<>();
+        ret.setCode(DEFAULT_SUCCESS_CODE);
+        ret.setSuccess(true);
+        ret.setMsg(msg);
+        ret.setRemark("success");
+        ret.setData(data);
+        ret.setException(null);
+        return ret;
+
+    }
+    public static <T> ResultDTO<T> handleResult(String msg, T data) {
+        ResultDTO<T> ret = new ResultDTO<>();
+        ret.setCode(DEFAULT_ERROR_CODE);
+        ret.setMsg(msg);
+        ret.setSuccess(false);
+        ret.setRemark("occur an error");
+        ret.setData(data);
+        ret.setException(null);
+        return ret;
+    }
+    public static <T> ResultDTO<T> handleException(String msg, T data, Throwable e) {
+        ResultDTO<T> ret = new ResultDTO<>();
+        ret.setCode(DEFAULT_EXCEPTION_CODE);
+        ret.setSuccess(false);
+        ret.setMsg(null == msg ? e.getMessage() : msg);
+        ret.setRemark("occur an exception");
+        ret.setData(data);
+        ret.setException(e);
+        return ret;
+
+    }
+
     public static <T> ResultDTO<T> createExceptionResult(Throwable e, Class<T> clazz) {
 
         return createExceptionResult("", e, clazz);

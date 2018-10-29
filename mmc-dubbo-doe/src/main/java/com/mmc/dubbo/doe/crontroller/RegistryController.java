@@ -9,6 +9,7 @@
  */
 package com.mmc.dubbo.doe.crontroller;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.mmc.dubbo.doe.dto.ResultDTO;
 import com.mmc.dubbo.doe.model.RegistryModel;
@@ -32,6 +33,27 @@ public class RegistryController {
 
     @Autowired
     private ConfigService configService;
+
+    @RequestMapping("/doListZk")
+    public String doListZk() {
+
+        log.info("RegistryController.doListZk()");
+
+        String result;
+
+        try {
+
+            List<RegistryModel> models = configService.listRegistry();
+            result = JSON.toJSONString(models);
+
+        } catch(Exception e) {
+
+            result = "[]";
+        }
+
+        return result;
+    }
+
 
     @RequestMapping("/doListRegistry")
     public ResultDTO<Object> doListRegistry() {
@@ -67,7 +89,26 @@ public class RegistryController {
 
         } catch(Exception e) {
 
-            resultDTO = ResultDTO.createExceptionResult("occur an error when add registry address : ", e, RegistryModel.class);
+            resultDTO = ResultDTO.createExceptionResult(e, RegistryModel.class);
+        }
+
+        return resultDTO;
+    }
+
+    @RequestMapping("/delRegistry")
+    public ResultDTO<RegistryModel> delRegistry(@NotNull RegistryModel dto) {
+
+        log.info("RegistryController.delRegistry({})", JSON.toJSONString(dto));
+
+        ResultDTO<RegistryModel> resultDTO;
+
+        try {
+
+            resultDTO = configService.delRegistry(dto);
+
+        } catch(Exception e) {
+
+            resultDTO = ResultDTO.createExceptionResult(e, RegistryModel.class);
         }
 
         return resultDTO;

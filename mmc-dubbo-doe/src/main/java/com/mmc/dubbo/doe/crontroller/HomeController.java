@@ -56,6 +56,11 @@ public class HomeController {
         return "/pages/v3/listJar.html";
     }
 
+    @RequestMapping("/listZk")
+    public String openListZkPage() {
+
+        return "/pages/v3/listZk.html";
+    }
 
 
 }

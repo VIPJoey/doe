@@ -10,10 +10,12 @@
 package com.mmc.dubbo.doe.service.impl;
 
 import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.mmc.dubbo.doe.cache.RedisResolver;
 import com.mmc.dubbo.doe.context.Const;
 import com.mmc.dubbo.doe.dto.ResultDTO;
+import com.mmc.dubbo.doe.exception.DoeException;
 import com.mmc.dubbo.doe.model.RegistryModel;
 import com.mmc.dubbo.doe.service.ConfigService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -75,6 +78,17 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public ResultDTO<RegistryModel> addRegistry(RegistryModel model) {
 
+
+        if (null == model) {
+            throw new DoeException("the paramter can't be null.");
+        }
+        if (StringUtils.isEmpty(model.getRegistryKey())) {
+            throw new DoeException("the registryKey can not be null.");
+        }
+        if (StringUtils.isEmpty(model.getRegistryDesc())) {
+            throw new DoeException("the registryDesc can not be null.");
+        }
+
         boolean flag = redisResolver.sAdd(Const.DOE_REGISTRY_KEY, model) > 0;
         if (flag) {
             return ResultDTO.createSuccessResult("success to add registry.", RegistryModel.class);
@@ -85,6 +99,17 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public ResultDTO<RegistryModel> delRegistry(RegistryModel model) {
+
+        if (null == model) {
+            throw new DoeException("the paramter can't be null.");
+        }
+        if (StringUtils.isEmpty(model.getRegistryKey())) {
+            throw new DoeException("the registryKey can not be null.");
+        }
+        if (StringUtils.isEmpty(model.getRegistryDesc())) {
+            throw new DoeException("the registryDesc can not be null.");
+        }
+
         boolean flag = redisResolver.sRem(Const.DOE_REGISTRY_KEY, model) > 0;
         if (flag) {
             return ResultDTO.createSuccessResult("success to delete registry.", RegistryModel.class);

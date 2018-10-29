@@ -98,9 +98,9 @@
             url : "/doe/pom/doListJars",
             datatype : "json",
             height : 300,
-            colNames : [ '流水号', 'groupId', 'artifactId', 'version', '操作'],
+            rownumbers: true,
+            colNames : [ 'groupId', 'artifactId', 'version', '操作'],
             colModel:[
-                {name: 'id', index: '', width: 50, editable: false, hidden: false},
                 {name: 'groupId', index: 'groupId',  editable: false, edittype: "text"},
                 {name: 'artifactId', index: 'artifactId', width: 80,  editable: false},
                 {name: 'version', index: 'version', hidden: false, edittype: "text"},

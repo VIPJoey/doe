@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Doe</title>
+    <!-- 导入头部 ,统一引用那些静态资源  -->
+    <link rel="stylesheet" th:href="@{~/v3/assets/css/chosen.css}" />
+    <script th:replace="/pages/tpl/head::header"></script>
+    <style>
+        .scroll { overflow-y: scroll; overflow-x: scroll;}
+    </style>
+</head>
+<body>
+
+<div th:replace="/pages/tpl/top::topper"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="main-container-inner">
+
+        <div th:replace="/pages/tpl/left::lefter"></div>
+
+        <div class="main-content">
+            <div th:replace="/pages/tpl/bread::breader"></div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        依赖列表
+                    </h1>
+                </div>
+                <!-- /.page-header -->
+
+                <div class="row">
+                    <div class="col-xs-12" >
+                        <!-- PAGE CONTENT BEGINS -->
+
+                        <div class="row">
+
+                            <div class="col-xs-12">
+                                <div id="widgetBox" class="widget-box">
+                                    <div class="widget-header">
+                                        <h4 onclick="doCollapsed()">新增地址</h4>
+
+                                        <span class="widget-toolbar">
+
+													<a id="collapseSwitch" href="#" data-action="collapse">
+														<i class="icon-chevron-up"></i>
+													</a>
+
+													<a href="#" data-action="close">
+														<i class="icon-remove"></i>
+													</a>
+												</span>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+
+                                            <label for="form-field-1">地址</label>
+                                            <div class="row">
+                                                <div class="col-sm-11">
+                                                    <input type="text" id="form-field-1" placeholder="----请输入----" class="col-sm-12">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <label class="control-label no-padding-right" for="form-field-2"> 描述 </label>
+                                            <div class="row">
+                                                <div class="col-sm-11">
+                                                    <input type="text" id="form-field-2" placeholder="----请输入----" class="col-sm-12">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-11">
+                                                    <button class="btn btn-info" type="button" onclick="doSave();">
+                                                        <i class="icon-ok bigger-110"></i>
+                                                        新增
+                                                    </button>
+                                                    &nbsp; &nbsp;
+                                                    <button class="btn" type="reset" onclick="doCollapsed();">
+                                                        <i class="icon-undo bigger-110"></i>
+                                                        收起
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="table-responsive">
+
+                                    <table id="grid-table"></table>
+                                    <div id="grid-pager"></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="hr hr-24"></div>
+
+
+                    </div><!-- /.col -->
+                </div>
+
+                <!-- /.row -->
+            </div>
+            <!-- /.page-content -->
+        </div>
+        <!-- /.main-content -->
+
+    </div>
+    <!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up"
+       class="btn-scroll-up btn btn-sm btn-inverse"> <i
+            class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<!-- /.main-container -->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+
+<script th:src="@{~/v3/assets/js/chosen.jquery.min.js}"></script>
+<script th:src="@{~/v3/assets/js/bootbox.min.js}"></script>
+<script th:replace="/pages/tpl/foot::footer"></script>
+
+<script type="text/javascript">
+
+    function doSave() {
+
+        var registryKey = $("#form-field-1").val();
+        var registryDesc = $("#form-field-2").val();
+        var params = {"registryKey": registryKey, "registryDesc": registryDesc};
+
+        // 新增
+        Nora.Ajax("/doe/zk/addRegistry", params, function(data){
+
+            if (data.success) {
+
+                reloadGrid();
+
+            } else {
+                bootbox.alert(data.msg);
+            }
+        });
+    }
+
+    function doCollapsed() {
+        $("#collapseSwitch").click();
+    }
+
+    function reloadGrid() {
+
+        var grid_selector = "#grid-table";
+        var pager_selector = "#grid-pager";
+        jQuery(grid_selector).jqGrid().trigger('reloadGrid');
+    }
+
+    function doDelete(sender) {
+
+        var registryKey = $(sender).attr("data-key");
+        var registryDesc = $(sender).attr("data-value");
+        var params = {"registryKey": registryKey, "registryDesc": registryDesc};
+
+        // 删除
+        Nora.Ajax("/doe/zk/delRegistry", params, function(data){
+            reloadGrid();
+        });
+
+    }
+
+    function deleteRender(cellvalue, options, rowObject) {
+
+        return "<div onclick='doDelete(this)' data-key='" + rowObject.registryKey + "' data-value='" + rowObject.registryDesc + "'>删除</div>";
+    }
+    jQuery(function($) {
+
+        var grid_selector = "#grid-table";
+        var pager_selector = "#grid-pager";
+
+        jQuery(grid_selector).jqGrid({
+            url : "/doe/zk/doListZk",
+            datatype : "json",
+            height : 300,
+            colNames : [ '地址', '备注', '操作'],
+            rownumbers: true,
+            colModel:[
+                {name: 'registryKey', index: 'groupId',  editable: false, edittype: "text"},
+                {name: 'registryDesc', index: 'artifactId', editable: false},
+                {name: '', index: '', hidden: false, editable: false, edittype: "text", formatter: deleteRender}
+            ],
+            viewrecords : true,
+            rowNum : 500,
+            rowList : [ 100, 200, 300 ],
+            pager : pager_selector,
+            altRows : true,
+            //toppager: true,
+            multiselect : false,
+            //multikey: "ctrlKey",
+            multiboxonly : true,
+            loadComplete : function() {
+                var table = this;
+                setTimeout(function() {
+                    JGridUtils.styleCheckbox(table);
+                    JGridUtils.updateActionIcons(table);
+                    JGridUtils.updatePagerIcons(table);
+                    JGridUtils.enableTooltips(table);
+                }, 0);
+            },
+            onSelectRow : function(ids) {
+
+            },
+            autowidth : true
+        });
+
+        // 渲染导航
+        JGridUtils.renderNav(grid_selector, pager_selector);
+
+        // 默认收起
+        doCollapsed();
+    });
+
+</script>
+
+</body>
+</html>
