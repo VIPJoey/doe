@@ -251,9 +251,10 @@
             url : "/doe/case/doList",
             datatype : "json",
             height : 300,
+            rownumbers: true,
             colNames : [ '流水号', '插入时间', '用例名称', '提供者地址', '接口名称', '方法名称', 'providerKey', 'methodKey', 'json', '用例描述'],
             colModel:[
-                {name: 'caseId', index: 'caseId', width: 50, editable: false, hidden: false},
+                {name: 'caseId', index: 'caseId', width: 50, editable: false, hidden: true},
                 {name: 'insertTime', index: 'insertTime', width: 80, editable: false, formatter: JGridUtils.dateTimeFormat},
                 {name: 'caseName', index: 'caseName',  editable: false, edittype: "text"},
                 {name: 'address', index: 'address', width: 80,  editable: false},
