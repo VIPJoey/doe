@@ -124,6 +124,7 @@
     </dependencies>
 
     <build>
+        <finalName>dubbo-doe</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -132,6 +133,23 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prd</id>
+            <properties>
+                <spring.profiles.active>prd</spring.profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
 
 </project>

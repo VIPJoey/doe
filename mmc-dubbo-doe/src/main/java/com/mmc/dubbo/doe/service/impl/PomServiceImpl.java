@@ -302,6 +302,10 @@ public class PomServiceImpl implements PomService {
             return ResultDTO.createErrorResult(StringUtil.format("can't found the path {}", fullLibPath), String.class);
         }
 
+        if (!new File(fullLibPath).exists()) {
+            throw new DoeException(StringUtil.format("the path[{}] is not exists.", fullLibPath));
+        }
+
         log.info("begin to load jars from {}.", fullLibPath);
 
         // check for changes prevent to do useless job.

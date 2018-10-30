@@ -2,15 +2,18 @@
 
 source /etc/profile
 
+function log() {
+    echo `date '+%Y-%m-%d %H:%M:%S'` "$1"
+}
 
 function doStop() {
-	echo "bein to stop doe."
+	log "bein to stop doe."
 	
 	count=`ps aux|grep "java -jar dubbo-doe" |grep -v grep|wc -l`
 
 	if [ $count -gt 0 ]
 	then
-		echo "bein to shutdown doe."
+		log "bein to shutdown doe."
 		pid=`ps aux|grep "java -jar dubbo-doe" |grep -v grep|awk  '{ print $2 }'`
 		kill $pid
 		sleep 3s
@@ -19,24 +22,24 @@ function doStop() {
 	count=`ps aux|grep "java -jar dubbo-doe" |grep -v grep|wc -l`
 	if [ $count -gt 0 ]
 	then
-		echo "bein to force to kill doe."
+		log "bein to force to kill doe."
 		pid=`ps aux|grep "java -jar dubbo-doe" |grep -v grep|awk  '{ print $2 }'`
 		kill -9 $pid
 		sleep 3s
 	fi
-	echo "finish stop doe."
+	log "finish stop doe."
 }
 function doStart() {
-        echo "bein to install doe."
+        log "bein to install doe."
 
         java -jar dubbo-doe-1.0.0-RELEASE.jar --spring.profiles.active=prd &
 
-        echo "finish install doe."
+        log "finish install doe."
 }
 
 function main() {
 
-	echo "welcome to doe."
+	log "welcome to doe."
 	
 	option="$1"
 	
@@ -46,11 +49,23 @@ function main() {
 	elif [ "$option" = "stop" ]
 	then
 		doStop
+	elif [ "$option" = "reload" ]
+	then
+	    doStop
+	    sleep 3s
+	    doStart
+	elif [ "$option" = "republish" ]
+	then
+	    doStop
+	    cp pom.xml.backup pom.xml
+	    rm -rf ./lib/*
+	    sleep 3s
+	    doStart
 	else 
-		echo "input option error (start/stop)"
+		log "input option error (start/stop/reload/republish)"
 	fi
 	
-	echo "done."
+	log "done."
 
 }
 
