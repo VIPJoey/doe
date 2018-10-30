@@ -1,11 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # --coding:utf-8--
 
 import os
 import time
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from os import path
-from urllib.parse import urlparse
+import urlparse
 
 curdir = path.dirname(path.realpath(__file__))
 sep = '/'
@@ -33,7 +33,7 @@ class SimpleHttpServerHandler(BaseHTTPRequestHandler):
     # GET
     def do_GET(self):
 
-        querypath = urlparse(self.path)
+        querypath = urlparse.urlparse(self.path)
         filepath, query = querypath.path, querypath.query
 
         filename, fileext = path.splitext(filepath)
@@ -41,7 +41,7 @@ class SimpleHttpServerHandler(BaseHTTPRequestHandler):
         self.log(filename + " --- " + fileext)
 
         # 支持命令集合
-        urlSet = set(("/start", "/stop", "/reload", "/republsh"))
+        urlSet = set(("/start", "/stop", "/reload", "/republish"))
         sendReply = filename in urlSet
 
         if sendReply == True:
@@ -49,8 +49,8 @@ class SimpleHttpServerHandler(BaseHTTPRequestHandler):
 
                 param = filename[1:]
 
-                os.system("/app/doe/delopy.sh " + param)
-                self.log("/app/doe/delopy.sh " + param)
+                self.log("/app/doe/deploy.sh " + param)
+                os.system("/app/doe/deploy.sh " + param)
 
                 content = ("{'success': true, 'msg': 'success.'}").encode("utf-8")
                 self.send_response(200)
@@ -86,3 +86,4 @@ def run():
 
 if __name__ == '__main__':
     run()
+

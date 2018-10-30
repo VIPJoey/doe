@@ -1,0 +1,49 @@
+/*
+ * Copyright (c) 2010-2020 Founder Ltd. All Rights Reserved.
+ *
+ * This software is the confidential and proprietary information of
+ * Founder. You shall not disclose such Confidential Information
+ * and shall use it only in accordance with the terms of the agreements
+ * you entered into with Founder.
+ *
+ */
+package com.mmc.dubbo.doe.crontroller;
+
+import com.mmc.dubbo.doe.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * @author Joey
+ * @date 2018/10/30 16:28
+ */
+@Slf4j
+@Controller
+@RequestMapping("/doe/sys")
+public class SysConfController {
+
+    @Value("${doe.watchdog.url}")
+    private String url;
+
+    @RequestMapping("/doReload")
+    public String doReload(HttpServletResponse response) {
+
+        log.info("SysConfController.doReload");
+
+        return StringUtil.format("redirect:{}/reload", url);
+
+    }
+
+    @RequestMapping("/doRepublish")
+    public String doRepublish(HttpServletResponse response) {
+
+        log.info("SysConfController.doRepublish");
+
+        return StringUtil.format("redirect:{}/republish", url);
+
+    }
+}

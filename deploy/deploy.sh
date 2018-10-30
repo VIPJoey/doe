@@ -32,7 +32,7 @@ function doStop() {
 function doStart() {
         log "bein to install doe."
 
-        java -jar dubbo-doe-1.0.0-RELEASE.jar --spring.profiles.active=prd &
+        java -jar dubbo-doe.jar --spring.profiles.active=prd &
 
         log "finish install doe."
 }

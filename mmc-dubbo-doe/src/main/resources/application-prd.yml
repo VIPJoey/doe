@@ -35,5 +35,5 @@ doe:
     lib: /app/doe/lib/
     # 用于执行mvn命令超时时间（秒）
     timeout: 20
-  logs:
-    dir: /app/logs
+  watchdog:
+    url: http://10.204.49.54:8000

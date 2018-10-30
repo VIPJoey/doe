@@ -1,10 +1,12 @@
 # Doe 发布 [V1.1.0]
 
 ## 功能特性
-    * 修复Grid序号问题
-    * 修复spring依赖
-    * 增加注册中心管理页面
-    * 增加守护程序，停止、重启、发布
+-   修复Grid序号问题
+-   修复spring依赖
+-   增加注册中心管理页面
+-   增加守护程序，停止、重启、发布
+        * 需要python2 环境支持
+        * 进入deploy目录，执行 chmod +x SimpleHttpServer.py && ./SimpleHttpServer.py 命令启动守护进程. 
 
 # Doe 发布 [V1.0.0]
 
@@ -52,10 +54,11 @@
 -   安装jdk
 -   安装maven，并设置好环境变量，仓库目录。
 -   进入mmc-dubbo-api目录，执行mvn clean install命令，省api的jar包。
--   进入mmc-dubbo-doe目录，执行mvn clean install 命令，在target目录生成dubbo-doe-1.0.0-RELEASE.jar
+-   进入mmc-dubbo-doe目录，执行mvn clean install 命令，在target目录生成dubbo-doe.jar
 -   在F盘（可以任意盘）创建目录F:\app\doe
--   把dubbo-doe-1.0.0-RELEASE.jar拷贝到F:\app\doe
+-   把dubbo-doe.jar拷贝到F:\app\doe
 -   把deploy目录中的所有文件拷贝到F:\app\doe
--   如果您电脑安装了git bash，可以在bash窗口运行 ./deploy.sh start，否则如果没有安装git bash，只能打开cmd切换到F:\app\doe目录，然后执行java -jar dubbo-doe-1.0.0-RELEASE.jar --spring.profiles.active=prd
+-   如果您电脑安装了git bash，可以在bash窗口运行 ./deploy.sh start，否则如果没有安装git bash，只能打开cmd切换到F:\app\doe目录，然后执行java -jar dubbo-doe.jar --spring.profiles.active=prd
 -   打开浏览器，访问地址：http://localhost:9876/doe/home/index
+-   日志目录：/app/applogs/doe
 -   全剧终

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Doe</title>
+    <!-- 导入头部 ,统一引用那些静态资源  -->
+    <link rel="stylesheet" th:href="@{~/v3/assets/css/chosen.css}" />
+    <script th:replace="/pages/tpl/head::header"></script>
+    <style>
+        .scroll { overflow-y: scroll; overflow-x: scroll;}
+    </style>
+</head>
+<body>
+
+<div th:replace="/pages/tpl/top::topper"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="main-container-inner">
+
+        <div th:replace="/pages/tpl/left::lefter"></div>
+
+        <div class="main-content">
+            <div th:replace="/pages/tpl/bread::breader"></div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        系统管理
+                    </h1>
+                </div>
+                <!-- /.page-header -->
+
+                <div class="row">
+                    <div class="col-xs-12" >
+                        <!-- PAGE CONTENT BEGINS -->
+
+                        <div class="row-fluid">
+                            <h5 class="header smaller lighter green">重启应用，重新加载jar包.</h5>
+                            <p>
+
+                                <a href="/doe/sys/doReload" class="btn btn-app btn-warning">
+                                    <i class="icon-undo"></i>
+                                    重启
+                                </a>
+
+
+                            </p>
+                        </div>
+                        <div class="row-fluid">
+                            <h5 class="header smaller lighter green">重新部署应用，清空所有jar包.</h5>
+                            <p>
+
+                                <a href="/doe/sys/doRepublish" class="btn btn-app btn-success">
+                                    <i class="icon-refresh"></i>
+                                    重新部署
+                                </a>
+
+                            </p>
+                        </div>
+
+
+
+                        <div class="hr hr-24"></div>
+
+
+                    </div><!-- /.col -->
+                </div>
+
+                <!-- /.row -->
+            </div>
+            <!-- /.page-content -->
+        </div>
+        <!-- /.main-content -->
+
+    </div>
+    <!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up"
+       class="btn-scroll-up btn btn-sm btn-inverse"> <i
+            class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<!-- /.main-container -->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+
+<script th:src="@{~/v3/assets/js/chosen.jquery.min.js}"></script>
+<script th:src="@{~/v3/assets/js/bootbox.min.js}"></script>
+<script th:replace="/pages/tpl/foot::footer"></script>
+
+<script type="text/javascript">
+
+    jQuery(function($) {
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -62,5 +62,10 @@ public class HomeController {
         return "/pages/v3/listZk.html";
     }
 
+    @RequestMapping("/sys")
+    public String openSysPage() {
+
+        return "/pages/v3/sys.html";
+    }
 
 }
