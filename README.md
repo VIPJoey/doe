@@ -4,6 +4,7 @@
 -   修复grid序号问题
 -   修复spring 版本过低问题
 -   增加注册中心管理页面
+-   增加接口version和group支持
 -   provider 修改为starter方式
 -   增加守护程序，停止、重启、发布
         * 需要python2 环境支持

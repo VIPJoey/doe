@@ -16,7 +16,7 @@ import com.mmc.dubbo.api.user.UserService;
  * @author Joey
  * @date 2018/5/8 20:31
  */
-@com.alibaba.dubbo.config.annotation.Service
+@com.alibaba.dubbo.config.annotation.Service(version = "2.0.0", group = "mmcgroup")
 public class UserFeedbackServiceImpl implements UserService {
 
     /**
@@ -32,7 +32,7 @@ public class UserFeedbackServiceImpl implements UserService {
 
         UserFact user = new UserFact();
         user.setId(id);
-        user.setName("SUCCESS");
+        user.setName("mmcgroup");
 
         return user;
     }

@@ -63,6 +63,7 @@
                                                         </button>
                                                     </span>
                                                 </div>
+                                                <span class="smaller-20 lighter blue">如有需要，请先设置group和version，再连接zk.</span>
                                             </div>
                                         </div>
                                     </form>
@@ -115,10 +116,32 @@
                             </div>
 
                             <div class="col-xs-12 col-sm-4">
-                                <button class="btn btn-app btn-pink btn-sm" onclick="doListMethods();">
-                                    <i class="icon-share-alt bigger-200"></i>
-                                    拉取方法
-                                </button>
+                                <div class="col-xs-5">
+                                    <form class="form-horizontal">
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtVersion">接口版本</label>
+
+                                            <div class="controls">
+                                                <input type="text" id="txtVersion" placeholder="" />
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label class="control-label" for="txtGroup">接口分组</label>
+
+                                            <div class="controls">
+                                                <input type="text" id="txtGroup" placeholder="" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-xs-5">
+                                    <button class="btn btn-app btn-pink btn-sm" onclick="doListMethods();">
+                                        <i class="icon-share-alt bigger-200"></i>
+                                        拉取方法
+                                    </button>
+
+                                </div>
                             </div>
                         </div>
 
@@ -290,6 +313,8 @@
         var providerKey = $("#cboProviders").val();
         var methodKey = $("input[name='rdMethodKey']:checked").val();
         var json = paramEditor.getValue();
+        var version = $("#txtVersion").val();
+        var group = $("#txtGroup").val();
 
         if (null == providerKey || providerKey.length <= 0) {
             return;
@@ -298,7 +323,7 @@
             return;
         }
 
-        var params = {"providerKey": providerKey, "json": json, "methodKey": methodKey};
+        var params = {"providerKey": providerKey, "json": json, "methodKey": methodKey, "version": version, "group": group};
         Nora.Ajax("/doe/dubbo/doSend", params, function (data) {
 
             if (data.success && null != data.data && data.data.length > 0) {
@@ -386,8 +411,10 @@
     function doListProviders(serviceName) {
 
         var conn = $("#txtConnect").val();// 这就是selected的值
+        var version = $("#txtVersion").val();
+        var group = $("#txtGroup").val();
 
-        var params = {"conn": conn, "serviceName": serviceName};
+        var params = {"conn": conn, "serviceName": serviceName, "version": version, "group": group};
         var cboProvider = $("#cboProviders");
         Nora.Ajax("/doe/dubbo/doListProviders", params, function (data) {
 

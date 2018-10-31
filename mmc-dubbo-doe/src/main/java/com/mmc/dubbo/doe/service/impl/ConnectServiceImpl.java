@@ -98,8 +98,7 @@ public class ConnectServiceImpl implements ConnectService {
             throw new DoeException("the cache is validate, please reconnect to zk againt.");
         }
 
-        // TODO add service version support
-        List<UrlModel> providers = client.getProviders(connect.getServiceName());
+        List<UrlModel> providers = client.getProviders(connect);
 
         // throw fast json error if you don't convert simple pojo
         // I have no idea why the UrlModel object will throw stack over flow exception.

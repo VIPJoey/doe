@@ -11,12 +11,15 @@ package com.mmc.dubbo.doe.handler;
 
 import com.alibaba.dubbo.common.Constants;
 import com.alibaba.dubbo.common.URL;
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.registry.zookeeper.ZookeeperRegistry;
 import com.alibaba.dubbo.remoting.zookeeper.ZookeeperClient;
 import com.alibaba.dubbo.remoting.zookeeper.curator.CuratorZookeeperTransporter;
 import com.mmc.dubbo.doe.cache.MethodCaches;
 import com.mmc.dubbo.doe.cache.UrlCaches;
+import com.mmc.dubbo.doe.dto.ConnectDTO;
 import com.mmc.dubbo.doe.dto.MethodModelDTO;
+import com.mmc.dubbo.doe.exception.DoeException;
 import com.mmc.dubbo.doe.model.ServiceModel;
 import com.mmc.dubbo.doe.model.UrlModel;
 
@@ -71,14 +74,29 @@ public class CuratorHandler {
         return ret;
     }
 
-    public List<UrlModel> getProviders(String interfaceName) {
+    public List<UrlModel> getProviders(ConnectDTO dto) {
+
+        if (null == dto) {
+            throw new DoeException("dto can't be null.");
+        }
+        if (StringUtils.isEmpty(dto.getServiceName())) {
+            throw new DoeException("service name can't be null.");
+        }
 
         Map<String, String> map = new HashMap<>();
-        map.put(Constants.INTERFACE_KEY, interfaceName);
+        map.put(Constants.INTERFACE_KEY, dto.getServiceName());
+
+        if (StringUtils.isNotEmpty(dto.getVersion())) {
+            map.put(Constants.VERSION_KEY, dto.getVersion());
+        }
+        if (StringUtils.isNotEmpty(dto.getGroup())) {
+            map.put(Constants.GROUP_KEY, dto.getGroup());
+        }
+
         URL url = new URL(protocol, host, port, map);
         List<URL> list = registry.lookup(url);
 
-        return UrlCaches.cache(interfaceName, list);
+        return UrlCaches.cache(dto.getServiceName(), list);
     }
 
     public List<MethodModelDTO> getMethods(String interfaceName) throws ClassNotFoundException {

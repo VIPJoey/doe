@@ -139,7 +139,7 @@ public class DubboController {
     @RequestMapping("/doListProviders")
     public ResultDTO<Object> doListProviders(@NotNull ConnectDTO dto) {
 
-        log.info("DubboController.doListProviders({})", dto.getServiceName());
+        log.info("DubboController.doListProviders({} {} {})", dto.getServiceName(), dto.getVersion(), dto.getGroup());
 
         ResultDTO<Object> resultDTO = new ResultDTO<>();
 

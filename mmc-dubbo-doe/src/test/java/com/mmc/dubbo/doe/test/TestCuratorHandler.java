@@ -9,6 +9,7 @@
  */
 package com.mmc.dubbo.doe.test;
 
+import com.mmc.dubbo.doe.dto.ConnectDTO;
 import com.mmc.dubbo.doe.handler.CuratorHandler;
 import com.mmc.dubbo.doe.dto.MethodModelDTO;
 import com.mmc.dubbo.doe.model.ServiceModel;
@@ -53,7 +54,17 @@ public class TestCuratorHandler {
     public void testGetProviders() {
 
         String interfaceName = "com.mmc.dubbo.api.user.UserService";
-        List<UrlModel> list = client.getProviders(interfaceName);
+
+        ConnectDTO dto = new ConnectDTO();
+        dto.setServiceName(interfaceName);
+
+        List<UrlModel> list = client.getProviders(dto);
+        Assert.assertTrue(list.size() <= 1);
+
+        dto.setVersion("2.0.0");
+        dto.setGroup("mmcgroup");
+        list = client.getProviders(dto);
+        Assert.assertTrue(list.size() == 0);
 
         System.out.println("----------------------------------------------------------------");
         list.forEach(l -> {

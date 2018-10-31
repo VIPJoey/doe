@@ -40,6 +40,8 @@ public class ParamUtil {
 
         HashMap<String, String> map = new HashMap<String, String>();
         map.put(Constants.PATH_KEY, interfaceName);
+        map.put(Constants.VERSION_KEY, url.getParameter(Constants.VERSION_KEY));
+        map.put(Constants.GROUP_KEY, url.getParameter(Constants.GROUP_KEY));
         /**
          *  doesn't necessary to set these params.
          *

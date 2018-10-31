@@ -16,16 +16,34 @@ import com.mmc.dubbo.api.user.UserService;
  * @author Joey
  * @date 2018/5/8 20:31
  */
+@com.alibaba.dubbo.config.annotation.Service
 public class UserMemberServiceImpl implements UserService {
 
 
     @Override
     public UserFact getCurrentById(long id) {
-        return null;
+
+        System.out.println("UserMemberServiceImpl.getCurrentById");
+
+        UserFact user = new UserFact();
+        user.setId(id);
+        user.setName("SUCCESS");
+
+        return user;
+
     }
 
     @Override
     public UserFact insert(UserFact u, String name, int sex) {
-        return null;
+
+        System.out.println("UserMemberServiceImpl.insert");
+
+        UserFact userFact = new UserFact();
+        userFact.setName(name);
+        userFact.setSex(sex);
+        userFact.setId(u.getId());
+
+        return userFact;
+
     }
 }

@@ -46,5 +46,12 @@ public class ConnectDTO extends BaseDTO {
      * timeout of waiting for result.
      */
     private int timeout;
-
+    /**
+     * interface version number, eg: 1.0.0
+     */
+    private String version;
+    /**
+     * the group of interface, eg: mmcgroup
+     */
+    private String group;
 }

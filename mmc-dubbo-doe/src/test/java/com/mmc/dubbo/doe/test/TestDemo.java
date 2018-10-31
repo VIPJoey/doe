@@ -17,6 +17,7 @@ import com.alibaba.dubbo.rpc.RpcResult;
 import com.mmc.dubbo.api.user.UserFact;
 import com.mmc.dubbo.doe.client.DoeClient;
 import com.mmc.dubbo.doe.context.ResponseDispatcher;
+import com.mmc.dubbo.doe.dto.ConnectDTO;
 import com.mmc.dubbo.doe.handler.CuratorHandler;
 import com.mmc.dubbo.doe.model.UrlModel;
 import com.mmc.dubbo.doe.util.ParamUtil;
@@ -47,7 +48,9 @@ public class TestDemo {
 
         CuratorHandler curatorHandler = new CuratorHandler(protocol, host, port);
         curatorHandler.doConnect();
-        List<UrlModel> urls = curatorHandler.getProviders(interfaceName);
+        ConnectDTO conn = new ConnectDTO();
+        conn.setServiceName(interfaceName);
+        List<UrlModel> urls = curatorHandler.getProviders(conn);
 
         URL url = urls.get(0).getUrl();
         url = url.addParameter(Constants.CODEC_KEY, protocol); // 非常重要，必须要设置编码器协议类型
