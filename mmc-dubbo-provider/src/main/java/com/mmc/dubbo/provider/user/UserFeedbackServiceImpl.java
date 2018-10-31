@@ -16,6 +16,7 @@ import com.mmc.dubbo.api.user.UserService;
  * @author Joey
  * @date 2018/5/8 20:31
  */
+@com.alibaba.dubbo.config.annotation.Service
 public class UserFeedbackServiceImpl implements UserService {
 
     /**

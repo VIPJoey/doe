@@ -1,0 +1,19 @@
+# ====================server====================
+server:
+  port: 8080
+spring:
+  application:
+    name: mmc-dubbo-provider
+dubbo:
+    application:
+        id: mmc-dubbo-provider
+        name: mmc-dubbo-provider
+    protocol:
+        id: dubbo
+        name: dubbo
+        port: 30880
+    registry:
+        address: zookeeper://127.0.0.1:2181
+        id: mmc-dubbo-provider-registry
+    scan:
+        base-packages: com.mmc.dubbo.provider

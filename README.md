@@ -1,12 +1,14 @@
 # Doe 发布 [V1.1.0]
 
 ## 功能特性
--   修复Grid序号问题
--   修复spring依赖
+-   修复grid序号问题
+-   修复spring 版本过低问题
 -   增加注册中心管理页面
+-   provider 修改为starter方式
 -   增加守护程序，停止、重启、发布
         * 需要python2 环境支持
-        * 进入deploy目录，执行 chmod +x SimpleHttpServer.py && ./SimpleHttpServer.py 命令启动守护进程. 
+        * 进入deploy目录，
+            执行 chmod +x SimpleHttpServer.py && ./SimpleHttpServer.py 命令启动守护进程. 
 
 # Doe 发布 [V1.0.0]
 
