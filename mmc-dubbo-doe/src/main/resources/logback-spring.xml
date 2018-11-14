@@ -16,18 +16,18 @@
         <file>${LOG_PATH}/info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_PATH}/info.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${LOG_PATH}/info.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
             <!--日志文件保留天数-->
             <maxHistory>60</maxHistory>
             <totalSizeCap>30GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大128MB时会被压缩和切割 -->
+                <maxFileSize>128MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
-        <!--日志文件最大的大小-->
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>30MB</MaxFileSize>
-        </triggeringPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
@@ -38,18 +38,18 @@
         <file>${LOG_PATH}/warn.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_PATH}/warn.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${LOG_PATH}/warn.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
             <!--日志文件保留天数-->
             <maxHistory>60</maxHistory>
             <totalSizeCap>30GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大128MB时会被压缩和切割 -->
+                <maxFileSize>128MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
-        <!--日志文件最大的大小-->
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>32MB</MaxFileSize>
-        </triggeringPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
@@ -60,18 +60,18 @@
         <file>${LOG_PATH}/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_PATH}/error.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${LOG_PATH}/error.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
             <!--日志文件保留天数-->
             <maxHistory>60</maxHistory>
             <totalSizeCap>30GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大128MB时会被压缩和切割 -->
+                <maxFileSize>128MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
-        <!--日志文件最大的大小-->
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <MaxFileSize>32MB</MaxFileSize>
-        </triggeringPolicy>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
@@ -80,9 +80,10 @@
     </appender>
     <appender name="asyncFileAppender" class="ch.qos.logback.classic.AsyncAppender">
         <discardingThreshold>0</discardingThreshold>
-        <queueSize>500</queueSize>
+        <queueSize>512</queueSize>
         <appender-ref ref="INFO" />
     </appender>
+
 
     <!-- 单独文件 -->
     <!--<appender></appender>-->
