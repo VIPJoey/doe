@@ -9,7 +9,10 @@
  */
 package com.mmc.dubbo.doe.crontroller;
 
+import com.mmc.dubbo.doe.service.MenuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -20,11 +23,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/doe/home")
 public class HomeController {
 
+    @Autowired
+    private MenuService menuService;
+
     @RequestMapping("/index")
-    public String index() {
+    public String index(Model model) {
+
+        model.addAttribute("mid", "f16001000");
 
         return "/pages/v3/easyCnt.html";
     }
+
+    @RequestMapping("/main")
+    public String index(String mid, Model model) {
+        // you can do something here, such as auth validation,,,
+        Integer menuId = Integer.valueOf(mid.substring(1));
+        String path = menuService.getUrl(menuId);
+
+        model.addAttribute("mid", mid);
+
+        return path;
+
+    }
+
 
     @RequestMapping("/normalCnt")
     public String openNormalPage() {
