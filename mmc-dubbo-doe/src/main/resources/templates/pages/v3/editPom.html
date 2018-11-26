@@ -38,22 +38,33 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
-
                         <div class="row">
-                            <textarea class="form-control" id="txtParams" rows="20"
-                                      placeholder=""></textarea>
+                            <div class="col-xs-12">
+
+                                <h4 class="smaller green" id="lblTitle"></h4>
+
+                                <textarea class="form-control" id="txtParams" rows="20"
+                                          placeholder=""></textarea>
+                                    <span class="smaller-20 lighter green">编辑pom文件后，或可以在系统管理->系统配置->重启生效.</span>
+
+                            </div>
                         </div>
 
 
                         <div class="row">
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <button class="btn btn-info" type="button" onclick="doLoad();">
+                                    <button class="btn btn-success" id="bootbox-regular" onclick="doSave();">保存POM文件</button>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn btn-info" type="button" onclick="doParsePom();">
                                         <i class="icon-ok bigger-110"></i>
-                                        加载
+                                        解析POM文件
                                     </button>
                                     &nbsp; &nbsp; &nbsp;
-                                    <button class="btn" id="bootbox-regular" onclick="doSave();">保存</button>
+                                    <button class="btn btn-info" type="button" onclick="doReload();">
+                                        <i class="icon-ok bigger-110"></i>
+                                        重新加载JAR
+                                    </button>
                                     &nbsp; &nbsp; &nbsp;
                                     <button class="btn" type="reset" onclick="doClear();">
                                         <i class="icon-undo bigger-110"></i>
@@ -93,10 +104,102 @@
 
 <script type="text/javascript">
 
+    var jobRef = ""; // 定时任务引用
+
     function doClear() {
 
         $("#txtParams").val("");
 
+    }
+    function doRequest(requestId) {
+
+        var param = {"requestId": requestId};
+
+        Nora.Ajax("/doe/pom/doMsg", param, function (data) {
+            if (data.success) {
+                // on success
+                $("#txtParams").scrollTop(500000);
+                if (data.code == 1) {
+                    // continue get message
+                    var message = data.data;
+                    $("#txtParams").val($("#txtParams").val() + "\n" + message);
+
+
+                } else if (data.code == 2) {
+                    // complete
+                    var message = data.data;
+                    // 替换所有的换行符
+                    $("#txtParams").val($("#txtParams").val() + "\n" + message);
+                    $("#lblTitle").text(data.msg);
+
+                    clearInterval(jobRef);
+
+                } else {
+
+                    // 阻止定时刷新
+                    clearInterval(jobRef);
+                }
+
+            } else {
+                // on fail
+                // 阻止定时刷新
+                clearInterval(jobRef);
+                bootbox.alert(data.msg);
+            }
+
+        }, function (data) {
+            // on fail
+            // 阻止定时刷新
+            clearInterval(jobRef);
+            bootbox.alert(data.msg);
+        });
+    }
+    function doParsePom() {
+
+        var param = {};
+
+        Nora.Ajax("/doe/pom/doReparse", param, function (data) {
+            if (data.success) {
+                // on success
+                var msg = data.msg;
+                $("#txtParams").val("");
+                $("#lblTitle").text(msg);
+                var requestId = data.data.requestId;
+
+                getRealTimeMessage(requestId);
+
+            } else {
+                bootbox.alert(data.msg);
+            }
+
+        }, function (data) {
+            // on fail
+            bootbox.alert(data.msg);
+        });
+    }
+    function getRealTimeMessage(requestId) {
+
+        if (null == requestId || requestId.length <= 0) {
+            bootbox.alert("获取不到请求ID！");
+            return;
+        }
+
+        // 设置定时刷新
+        jobRef = setInterval(function(){
+            doRequest(requestId);
+        },1000);
+
+    }
+    function doReload() {
+
+        var param = {};
+        Nora.Ajax("/doe/pom/doLoad", param, function (data) {
+
+            bootbox.alert(data.msg);
+
+        }, function (data) {
+            bootbox.alert(data.msg);
+        });
     }
     function doSave() {
 

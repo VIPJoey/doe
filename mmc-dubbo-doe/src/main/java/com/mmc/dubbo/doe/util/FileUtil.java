@@ -30,7 +30,7 @@ public class FileUtil {
             FileInputStream in = new FileInputStream(file);
             int read = in.read(filecontent);
             in.close();
-            log.info(String.format("read:{} filelength:{}", read, filelength));
+            log.info("read:{} filelength:{}", read, filelength);
         } catch (IOException e) {
             throw new DoeException(StringUtil.format("can't load the file content, because {}.", e.getMessage()));
         }
