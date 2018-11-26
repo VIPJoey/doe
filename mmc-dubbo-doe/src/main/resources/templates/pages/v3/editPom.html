@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Doe</title>
+    <!-- 导入头部 ,统一引用那些静态资源  -->
+    <link rel="stylesheet" th:href="@{~/v3/assets/css/dropzone.css}" />
+    <script th:replace="/pages/tpl/head::header"></script>
+</head>
+<body>
+
+<div th:replace="/pages/tpl/top::topper"></div>
+
+
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
+    </script>
+
+    <div class="main-container-inner">
+
+        <div th:replace="/pages/tpl/left::lefter"></div>
+
+        <div class="main-content">
+            <div th:replace="/pages/tpl/bread::breader"></div>
+
+            <div class="page-content">
+                <div class="page-header">
+                    <h1>
+                        编辑依赖
+                    </h1>
+                </div>
+                <!-- /.page-header -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- PAGE CONTENT BEGINS -->
+
+                        <div class="row">
+                            <textarea class="form-control" id="txtParams" rows="20"
+                                      placeholder=""></textarea>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-info" type="button" onclick="doLoad();">
+                                        <i class="icon-ok bigger-110"></i>
+                                        加载
+                                    </button>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" id="bootbox-regular" onclick="doSave();">保存</button>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" type="reset" onclick="doClear();">
+                                        <i class="icon-undo bigger-110"></i>
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div><!-- /.col -->
+                </div>
+
+                <!-- /.row -->
+            </div>
+            <!-- /.page-content -->
+        </div>
+        <!-- /.main-content -->
+
+    </div>
+    <!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up"
+       class="btn-scroll-up btn btn-sm btn-inverse"> <i
+            class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+</div>
+<!-- /.main-container -->
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+
+<script th:src="@{~/v3/assets/js/fuelux/fuelux.wizard.min.js}"></script>
+<script th:src="@{~/v3/assets/js/bootbox.min.js}"></script>
+<script th:replace="/pages/tpl/foot::footer"></script>
+
+<script type="text/javascript">
+
+    function doClear() {
+
+        $("#txtParams").val("");
+
+    }
+    function doSave() {
+
+        var content = $("#txtParams").val();
+        if (null == content || content.length <= 0) {
+            return;
+        }
+
+        var params = {"content": content};
+
+        Nora.Ajax("/doe/pom/doOverridePomFile", params, function (data) {
+
+            debugger
+            if (data.success && data.data) {
+
+                // on success
+                // $("#txtParams").val("success"); // clear
+                bootbox.alert("sucuss");
+
+            } else {
+                // on fail
+                bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
+            }
+
+        }, function (data) {
+            // on error
+            bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
+        });
+
+    }
+    function doLoad() {
+
+        var params = {};
+        Nora.Ajax("/doe/pom/doLoadPomFile", params, function (data) {
+
+            if (data.success && null != data.data && data.data.length > 0) {
+
+                // on success
+                $("#txtParams").val(data.data); // clear
+
+            } else {
+                // on fail
+                bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
+            }
+
+        }, function (data) {
+            // on error
+            bootbox.alert(null == data ? "操作失败！" : null != data.msg ? data.msg : data.remark);
+        });
+
+    }
+
+    jQuery(function($) {
+
+        doLoad();
+
+    });
+</script>
+
+</body>
+</html>

@@ -166,6 +166,46 @@ public class PomController {
         return result;
     }
 
+    @RequestMapping("/doLoadPomFile")
+    public ResultDTO<String> doLoadPomFile() {
 
+        log.info("PomController.doLoadPomFile");
+
+        ResultDTO<String> resultDTO;
+
+        try {
+
+            String content = pomService.loadPomFile(null);
+
+            resultDTO = ResultDTO.handleSuccess("SUCCESS", content);
+
+        } catch(Exception e) {
+
+            resultDTO = ResultDTO.createExceptionResult(e, String.class);
+        }
+
+        return resultDTO;
+    }
+
+    @RequestMapping("/doOverridePomFile")
+    public ResultDTO<Boolean> doOverridePomFile(String content) {
+
+        log.info("PomController.doOverridePomFile");
+
+        ResultDTO<Boolean> resultDTO;
+
+        try {
+
+            Boolean flag = pomService.overridePomFile("", content);
+
+            resultDTO = ResultDTO.handleSuccess("SUCCESS", flag);
+
+        } catch(Exception e) {
+
+            resultDTO = ResultDTO.createExceptionResult(e, Boolean.class);
+        }
+
+        return resultDTO;
+    }
 
 }

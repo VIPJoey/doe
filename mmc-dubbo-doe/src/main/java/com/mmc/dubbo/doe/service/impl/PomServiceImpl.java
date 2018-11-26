@@ -21,6 +21,7 @@ import com.mmc.dubbo.doe.exception.DoeException;
 import com.mmc.dubbo.doe.model.PomModel;
 import com.mmc.dubbo.doe.service.PomService;
 import com.mmc.dubbo.doe.util.DOMUtil;
+import com.mmc.dubbo.doe.util.FileUtil;
 import com.mmc.dubbo.doe.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,16 +43,13 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
@@ -395,5 +393,22 @@ public class PomServiceImpl implements PomService {
         // check if any changes
     }
 
+    @Override
+    public String loadPomFile(String pomXmlPath) {
 
+        String pomPath = StringUtils.isEmpty(pomXmlPath) ? pomXml : pomXmlPath;
+        return FileUtil.readToString(pomPath);
+
+    }
+
+    @Override
+    public Boolean overridePomFile(String pomXmlPath, String content) {
+
+        String pomPath = StringUtils.isEmpty(pomXmlPath) ? pomXml : pomXmlPath;
+
+        FileUtil.WriteStringToFile(pomPath, content);
+
+        return true;
+
+    }
 }

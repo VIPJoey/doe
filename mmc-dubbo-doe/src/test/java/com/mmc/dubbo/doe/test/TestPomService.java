@@ -165,4 +165,28 @@ public class TestPomService {
 
     }
 
+    @Test
+    public void testLoadPomFile() {
+
+        String pomXmlPath = TestPomService.class.getResource("/test-pom.xml").getPath();
+        String content = pomService.loadPomFile(pomXmlPath);
+
+        Assert.assertNotNull(content);
+        System.out.println(content);
+
+
+    }
+
+    @Test
+    public void testOverridePomFile() {
+
+        String pomXmlPath = TestPomService.class.getResource("/test-pom.xml").getPath();
+        String content = pomService.loadPomFile(pomXmlPath) + "\r\naaa";
+
+        boolean flag = pomService.overridePomFile(pomXmlPath, content);
+
+        Assert.assertTrue(flag);
+
+    }
+
 }

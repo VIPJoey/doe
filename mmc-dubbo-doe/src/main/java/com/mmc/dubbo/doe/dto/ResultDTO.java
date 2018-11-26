@@ -45,7 +45,7 @@ public class ResultDTO<T> {
         return ret;
 
     }
-    public static <T> ResultDTO<T> handleResult(String msg, T data) {
+    public static <T> ResultDTO<T> handleError(String msg, T data) {
         ResultDTO<T> ret = new ResultDTO<>();
         ret.setCode(DEFAULT_ERROR_CODE);
         ret.setMsg(msg);

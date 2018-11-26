@@ -55,6 +55,11 @@ public class HomeController {
 
         return "/pages/v3/listJar.html";
     }
+    @RequestMapping("/editPom")
+    public String openEditPomPage() {
+
+        return "/pages/v3/editPom.html";
+    }
 
     @RequestMapping("/listZk")
     public String openListZkPage() {

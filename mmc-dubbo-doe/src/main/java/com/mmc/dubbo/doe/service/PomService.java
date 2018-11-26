@@ -86,4 +86,20 @@ public interface PomService {
      * @return
      */
     List<PomModel> listJars(PomDTO dto) throws ParserConfigurationException, IOException, SAXException;
+
+    /**
+     * read the content from pom xml.
+     *
+     * @param pomXmlPath the path of pom xml file
+     * @return the pom content
+     */
+    String loadPomFile(String pomXmlPath);
+
+    /**
+     * override the content of pom xml.
+     *
+     * @param pomXmlPath the path of pom xml file
+     * @param content text
+     */
+    Boolean overridePomFile(String pomXmlPath, String content);
 }
