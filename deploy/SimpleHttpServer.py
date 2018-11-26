@@ -50,7 +50,7 @@ class SimpleHttpServerHandler(BaseHTTPRequestHandler):
                 param = filename[1:]
 
                 self.log("/app/doe/deploy.sh " + param)
-                os.system("/app/doe/deploy.sh " + param)
+		os.system("/app/doe/deploy.sh " + param)
 
                 content = ("{'success': true, 'msg': 'success.'}").encode("utf-8")
                 self.send_response(200)
