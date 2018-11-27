@@ -1,15 +1,61 @@
 # Doe 发布 [V1.1.0]
 
 ## 功能特性
--   修复grid序号问题
--   修复spring 版本过低问题
--   增加注册中心管理页面
--   增加接口version和group支持
--   provider 修改为starter方式
--   增加守护程序，停止、重启、发布
-        * 需要python2 环境支持
-        * 进入deploy目录，
-            执行 chmod +x SimpleHttpServer.py && ./SimpleHttpServer.py 命令启动守护进程. 
+
+##### 一、新功能
+* 增加注册中心管理模块
+* 增加编辑依赖模块
+* 增加守护程序，停止、重启、重新发布
+
+##### 二. 优化功能
+* provider 修改为starter方式
+* 增加接口version和group支持
+
+##### 三. 缺陷修复
+* 修复grid序号问题
+* 修复spring 版本过低问题
+* 优化菜单栏展示方式
+
+
+## 启动方式
+* IDEA 启动
+    - 安装JDK、并设置环境变量
+    - 安装MAVEN，并设置好环境变量，仓库目录
+    - 安装REDIS，设置相关配置
+    - 安装IDEA，设置IDEA环境
+    - 导入项目到IDEA，设置为maven工程，勾选profile环境
+    - 根据各自需要，修改application-dev.yml或application-prd.yml配置文件，除了redis配置项，其它建议保持默认配置
+    - 在当前IDEA的workspace所在根目录，创建/app/doe目录
+        - 例如：application-*.yml为默认配置，且当前IDEA的workspace为F:\idea-workspaces\mmc-workspace\，则在F盘创建F:\app\doe
+    - 进入mmc-dubbo-api目录，执行mvn clean install命令，生成api的jar包。
+    - 进入mmc-dubbo-doe目录，执行mvn clean install 命令，在target目录生成dubbo-doe.jar
+    - 打开mmc-dubbo-doe工程，找到DubboDoeApplication.java类，右键点击运行即可。
+    - 默认日志目录：/app/applogs/doe
+    - 打开浏览器，访问地址：http://localhost:9876/doe/home/index
+* LINUX 启动
+    - 安装JDK、并设置环境变量
+    - 安装MAVEN，并设置好环境变量，仓库目录
+    - 安装REDIS，设置相关配置
+    - 安装PYTHON（可选）
+    - 执行mkdir -p /app/doe，创建/app/doe目录，注意权限问题
+    - 把deploy目录中的所有文件上传到/app/doe
+    - 参考IDEA方式，下载DOE源码，并编译生成dubbo-doe.jar，并上传到/app/doe 目录
+    - 进入/app/doe 目录，执行chmod +x deploy.sh  
+    - 进入/app/doe 目录，执行 ./deploy.sh start 启动项目，支持(start/stop/reload/republish)参数，详细参数用途请阅读deploy.sh源码
+    - 进入/app/doe 目录，执行chmod +x SimpleHttpServer.py （可选）
+    - 进入/app/doe 目录，执行./SimpleHttpServer.py （可选）
+    - 默认日志目录：/app/applogs/doe
+    - 打开浏览器，访问地址：http://ip:9876/doe/home/index
+
+
+## 特别说明
+- 由于平时比较忙，仓促写下的代码未免有BUG，请见谅
+- 如遇到问题，可以github上留言，或贡献您的代码
+
+
+
+
+
 
 # Doe 发布 [V1.0.0]
 
@@ -51,17 +97,5 @@
 -   lombok 1.16.20
 -   idea 2018
 -   windows 7
+-   python 2.6.6
 
-## 安装步骤
-
--   安装jdk
--   安装maven，并设置好环境变量，仓库目录。
--   进入mmc-dubbo-api目录，执行mvn clean install命令，省api的jar包。
--   进入mmc-dubbo-doe目录，执行mvn clean install 命令，在target目录生成dubbo-doe.jar
--   在F盘（可以任意盘）创建目录F:\app\doe
--   把dubbo-doe.jar拷贝到F:\app\doe
--   把deploy目录中的所有文件拷贝到F:\app\doe
--   如果您电脑安装了git bash，可以在bash窗口运行 ./deploy.sh start，否则如果没有安装git bash，只能打开cmd切换到F:\app\doe目录，然后执行java -jar dubbo-doe.jar --spring.profiles.active=prd
--   打开浏览器，访问地址：http://localhost:9876/doe/home/index
--   日志目录：/app/applogs/doe
--   全剧终
