@@ -22,7 +22,9 @@
 
     <div class="main-container-inner">
 
-        <div th:replace="/pages/v3/menu::lefter"></div>
+        <!-- useless when you run doe in the jar way, so comment these code. -->
+        <!--<div th:replace="/pages/v3/menu::lefter"></div>-->
+        <div th:utext="${menuHtml}"></div>
 
         <div class="main-content">
             <div th:replace="/pages/tpl/bread::breader"></div>

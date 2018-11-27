@@ -29,18 +29,20 @@ public class HomeController {
     @RequestMapping("/index")
     public String index(Model model) {
 
-        model.addAttribute("mid", "f16001000");
-
-        return "/pages/v3/easyCnt.html";
+        // open easyCnt page defaultly.
+        return index("f16001100", model);
     }
 
     @RequestMapping("/main")
     public String index(String mid, Model model) {
+
         // you can do something here, such as auth validation,,,
         Integer menuId = Integer.valueOf(mid.substring(1));
         String path = menuService.getUrl(menuId);
+        String menuHtml = menuService.getHtml();
 
         model.addAttribute("mid", mid);
+        model.addAttribute("menuHtml", menuHtml);
 
         return path;
 

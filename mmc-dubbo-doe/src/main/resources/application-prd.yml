@@ -10,21 +10,15 @@ spring:
     prefix: classpath:/templates
     suffix: .html
   redis:
-      # 数据库索引
-      database: 0
-      host: 10.204.52.155
-      port: 8080
-      password: K6CJDjjnE9d0OxRjYNKZ
-      jedis:
-          pool:
-              # 最大连接数
-              max-active: 8
-              # 最大空闲
-              max-idle: 8
-              # 最小空闲
-              min-idle: 4
-          # 连接超时时间
-          timeout: 10000
+    cluster:
+        nodes: 10.204.58.11:8080,10.204.58.12:8080,10.204.58.13:8080,10.204.58.14:8080,10.204.58.15:8080,10.204.58.16:8080
+    password: K6CJDjjnE9d0OxRjYNKZ
+    pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 4
+    timeout: 10000
 
 # ====================doe====================
 doe:

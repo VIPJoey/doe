@@ -50,6 +50,15 @@ public class MenuServiceImpl implements MenuService {
      * cache urls.
      */
     private Map<Integer, String> cacheMap;
+    /**
+     * the html text.
+     */
+    private String html;
+
+    @Override
+    public String getHtml() {
+        return html;
+    }
 
     @Override
     public String getUrl(Integer mid) {
@@ -80,6 +89,7 @@ public class MenuServiceImpl implements MenuService {
             root = buildTree(tree, -1);
         } catch (Exception e) {
             log.error("fail to build the menu tree：", e);
+            return;
         }
         String html = toHtml("", root);
         String projectRealPath = getProjectRealPath();
@@ -94,7 +104,9 @@ public class MenuServiceImpl implements MenuService {
 
     private String getProjectRealPath() throws FileNotFoundException {
 
-        String path = ResourceUtils.getURL("classpath:").getPath();
+        // useless when you run doe in the jar way, so comment these code.
+//        String path = ResourceUtils.getURL("classpath:").getPath();
+        String path = "/app/doe/";
         path = path + STATIC_MENU_PATH;
         return path;
     }
@@ -116,7 +128,7 @@ public class MenuServiceImpl implements MenuService {
         // 写入权限菜单
         PrintWriter out = new PrintWriter(file);
         String content = ""
-                + "<div th:fragment=\"lefter\" xmlns:th=\"http://www.thymeleaf.org\">"
+//                + "<div th:fragment=\"lefter\" xmlns:th=\"http://www.thymeleaf.org\">"
                 + "\n<div class=\"sidebar\" id=\"sidebar\" >                                                                                        \n"
                 + "\n    <script type=\"text/javascript\">                                                                                         \n"
                 + "\n        try{ace.settings.check('sidebar' , 'fixed')}catch(e){}                                                                \n"
@@ -132,9 +144,10 @@ public class MenuServiceImpl implements MenuService {
                 + "\n    <script type=\"text/javascript\">                                                                                         \n"
                 + "\n        try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}                                                            \n"
                 + "\n    </script>                                                                                                                 \n"
-                + "\n</div>"
+//                + "\n</div>"
                 + "</div>";
 
+        this.html = content;
         out.append(content);
         out.flush();
         out.close();
