@@ -13,22 +13,20 @@ import java.io.Serializable;
 
 /**
  * @author Joey
- * @date 2018/5/8 20:26
+ * @date 2019/5/10 16:11
  */
-public class UserFact implements Serializable {
+public class GenericResp<T> implements Serializable {
 
-    private static final long serialVersionUID = 2798561567572955369L;
-    private long id;
+    private static final long serialVersionUID = 6753766666093779059L;
+    private T data;
     private String name;
-    private int sex;
-    private int height;
 
-    public long getId() {
-        return id;
+    public T getData() {
+        return data;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public String getName() {
@@ -37,21 +35,5 @@ public class UserFact implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getSex() {
-        return sex;
-    }
-
-    public void setSex(int sex) {
-        this.sex = sex;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 }

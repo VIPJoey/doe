@@ -32,4 +32,12 @@ public interface UserService {
      */
     UserFact insert(UserFact u, String name, int sex);
 
+    /**
+     * 泛型测试.
+     * @param user
+     * @return
+     */
+    GenericResp<UserFact> echo(GenericReq<UserFact> user);
+
 }
+

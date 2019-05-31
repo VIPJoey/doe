@@ -9,8 +9,13 @@
  */
 package com.mmc.dubbo.provider.user;
 
+import com.alibaba.fastjson.JSON;
+import com.mmc.dubbo.api.user.GenericReq;
+import com.mmc.dubbo.api.user.GenericResp;
 import com.mmc.dubbo.api.user.UserFact;
 import com.mmc.dubbo.api.user.UserService;
+import org.slf4j.MDC;
+import org.springframework.beans.BeanUtils;
 
 /**
  * @author Joey
@@ -45,5 +50,24 @@ public class UserMemberServiceImpl implements UserService {
 
         return userFact;
 
+    }
+
+    /**
+     * 泛型测试.
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public GenericResp<UserFact> echo(GenericReq<UserFact> user) {
+
+        System.out.println(JSON.toJSONString(user));
+
+        System.out.println("msp: " + MDC.getCopyOfContextMap());
+
+        GenericResp<UserFact> resp = new GenericResp<>();
+        BeanUtils.copyProperties(user, resp);
+
+        return resp;
     }
 }
