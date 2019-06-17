@@ -103,7 +103,9 @@ public class ProcessClient extends Thread {
 
         if (isOSLinux()) {
             return StringUtil.format("/bin/bash -c  mvn dependency:copy-dependencies -DoutputDirectory={} -DincludeScope=compile -f {}", libPath, pomXml);
-        } else {
+        } else if (isOSMac()){
+            return StringUtil.format("mvn dependency:copy-dependencies -DoutputDirectory={} -DincludeScope=compile -f {}", libPath, pomXml);
+        }else {
             return StringUtil.format("cmd /c  mvn dependency:copy-dependencies -DoutputDirectory=lib -DincludeScope=compile -f {}", pomXml);
         }
     }
@@ -123,6 +125,23 @@ public class ProcessClient extends Thread {
             return false;
         }
     }
+
+    /**
+     * judge if mac os.
+     *
+     * @return
+     */
+    public static boolean isOSMac() {
+        Properties prop = System.getProperties();
+
+        String os = prop.getProperty("os.name");
+        if (os != null && os.toLowerCase().contains("mac")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public boolean isDone() {
         return done;
