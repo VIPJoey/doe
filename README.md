@@ -39,7 +39,6 @@
 -   lombok 1.16.20
 -   idea 2018
 -   windows 7
--   python 2.6.6
 
 
 
@@ -66,6 +65,8 @@
 # Doe 发布 [V1.2.0]
 
 ## 功能特性
+* 增加独立加载JAR功能
+* 增加清空lib目录功能
 
 ##### 一、新功能
 * 无
@@ -75,6 +76,7 @@
 * 增加泛型接口测试
 * 修改dubbo依赖为starter方式
 * 修改类加载方式，增加沙箱隔离
+* 移除python模块
 
 ##### 三. 缺陷修复
 * 无
@@ -106,9 +108,7 @@
     - 把deploy目录中的所有文件上传到/app/doe
     - 参考IDEA方式，下载DOE源码，并编译生成dubbo-doe.jar，并上传到/app/doe 目录
     - 进入/app/doe 目录，执行chmod +x deploy.sh  
-    - 进入/app/doe 目录，执行 ./deploy.sh start 启动项目，支持(start/stop/reload/republish)参数，详细参数用途请阅读deploy.sh源码
-    - 进入/app/doe 目录，执行chmod +x SimpleHttpServer.py （可选）
-    - 进入/app/doe 目录，执行./SimpleHttpServer.py （可选）
+    - 进入/app/doe 目录，执行 ./deploy.sh start 启动项目，支持(start/stop)参数，详细参数用途请阅读deploy.sh源码
     - 默认日志目录：/app/applogs/doe
     - 打开浏览器，访问地址：http://ip:9876/doe/home/index
 

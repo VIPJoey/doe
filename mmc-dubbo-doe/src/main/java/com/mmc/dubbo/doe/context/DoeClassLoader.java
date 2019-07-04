@@ -75,6 +75,7 @@ public class DoeClassLoader extends ClassLoader {
                 }
             }
         }
+        jar.close();
     }
 
     private String makeClassName(String name) {

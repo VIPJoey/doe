@@ -14,7 +14,6 @@ import com.mmc.dubbo.doe.dto.ResultDTO;
 import com.mmc.dubbo.doe.model.RegistryModel;
 import com.mmc.dubbo.doe.service.ConfigService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,11 +58,6 @@ public class RegistryController {
     public ResultDTO<Object> doListRegistry() {
 
         log.info("RegistryController.doListRegistry()");
-        MDC.put("CUSTOM_PATTERN", "presstest");
-        log.info("hhhh");
-        log.warn("hh");
-        log.error("h");
-        System.out.println(MDC.get("PtxId"));
 
         ResultDTO<Object> resultDTO = new ResultDTO<>();
 

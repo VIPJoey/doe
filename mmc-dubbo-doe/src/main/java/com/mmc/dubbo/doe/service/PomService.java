@@ -102,4 +102,9 @@ public interface PomService {
      * @param content text
      */
     Boolean overridePomFile(String pomXmlPath, String content);
+
+    /**
+     * delete all jars in the specifiy path.
+     */
+    ResultDTO<String> deleteJars(String path);
 }

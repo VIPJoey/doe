@@ -25,6 +25,7 @@ import com.mmc.dubbo.doe.util.DOMUtil;
 import com.mmc.dubbo.doe.util.FileUtil;
 import com.mmc.dubbo.doe.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -426,4 +427,39 @@ public class PomServiceImpl implements PomService {
         return true;
 
     }
+
+    @Override
+    public ResultDTO<String> deleteJars(String path) {
+
+        String realPath = (StringUtils.isEmpty(path)) ? this.libPath : path;
+
+        if (StringUtils.isEmpty(realPath)) {
+            throw new DoeException(StringUtil.format("can't found the path {}", path));
+        }
+
+        File libPath = new File(realPath);
+        if (!libPath.exists()) {
+            throw new DoeException(StringUtil.format("the path[{}] is not exists.", path));
+        }
+
+        File[] jarFiles = libPath.listFiles((dir, name) -> name.endsWith(".jar") || name.endsWith(".zip"));
+
+        if (jarFiles != null) {
+            for (File file : jarFiles) {
+                log.info("begin to delete file {}.", file.getAbsolutePath());
+                boolean ret = file.delete();
+                if (!ret) {
+                    try {
+                        log.info("begin to force to delete file {}.", file.getAbsolutePath());
+                        FileUtils.forceDelete(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return ResultDTO.handleSuccess("delete sucess!", path);
+    }
+
+
 }

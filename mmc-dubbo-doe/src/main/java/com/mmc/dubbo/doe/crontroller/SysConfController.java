@@ -9,41 +9,54 @@
  */
 package com.mmc.dubbo.doe.crontroller;
 
-import com.mmc.dubbo.doe.util.StringUtil;
+import com.mmc.dubbo.doe.dto.ResultDTO;
+import com.mmc.dubbo.doe.service.PomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.net.MalformedURLException;
 
 /**
  * @author Joey
  * @date 2018/10/30 16:28
  */
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/doe/sys")
 public class SysConfController {
 
     @Value("${doe.watchdog.url}")
     private String url;
 
+    @Resource
+    private PomService pomService;
+
     @RequestMapping("/doReload")
-    public String doReload(HttpServletResponse response) {
+    public ResultDTO<String> doReload(HttpServletResponse response) {
 
         log.info("SysConfController.doReload");
 
-        return StringUtil.format("redirect:{}/reload", url);
+        try {
+
+            return pomService.loadJars("");
+
+        } catch (NoSuchMethodException | MalformedURLException e) {
+
+            return ResultDTO.handleException(null, null, e);
+        }
 
     }
 
     @RequestMapping("/doRepublish")
-    public String doRepublish(HttpServletResponse response) {
+    public ResultDTO<String> doRepublish(HttpServletResponse response) {
 
         log.info("SysConfController.doRepublish");
 
-        return StringUtil.format("redirect:{}/republish", url);
+        return pomService.deleteJars("");
 
     }
 }
