@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.mmc.dubbo.doe.cache.RedisResolver;
 import com.mmc.dubbo.doe.client.ProcessClient;
 import com.mmc.dubbo.doe.context.Const;
+import com.mmc.dubbo.doe.context.DoeClassLoader;
 import com.mmc.dubbo.doe.context.TaskContainer;
 import com.mmc.dubbo.doe.dto.PomDTO;
 import com.mmc.dubbo.doe.dto.ResultDTO;
@@ -24,6 +25,7 @@ import com.mmc.dubbo.doe.util.DOMUtil;
 import com.mmc.dubbo.doe.util.FileUtil;
 import com.mmc.dubbo.doe.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -292,7 +294,21 @@ public class PomServiceImpl implements PomService {
     }
 
     @Override
-    public ResultDTO<String> loadJars(String path) throws NoSuchMethodException, MalformedURLException {
+    public ResultDTO<String> loadJars(String path) {
+
+        String realPath = (StringUtils.isEmpty(path)) ? this.libPath : path;
+        DoeClassLoader classLoader = new DoeClassLoader(realPath);
+        try {
+            classLoader.loadJars();
+            return ResultDTO.createSuccessResult("load jars completely and successfully", String.class);
+        } catch (Exception e) {
+            return ResultDTO.handleException("occur an error when load jars", null, e);
+        }
+
+    }
+
+    @Deprecated // since v1.1.0
+    public ResultDTO<String> loadJars$$(String path) throws NoSuchMethodException, MalformedURLException {
 
         String fullLibPath = StringUtils.isEmpty(path) ? this.libPath : path;
 
@@ -411,4 +427,39 @@ public class PomServiceImpl implements PomService {
         return true;
 
     }
+
+    @Override
+    public ResultDTO<String> deleteJars(String path) {
+
+        String realPath = (StringUtils.isEmpty(path)) ? this.libPath : path;
+
+        if (StringUtils.isEmpty(realPath)) {
+            throw new DoeException(StringUtil.format("can't found the path {}", path));
+        }
+
+        File libPath = new File(realPath);
+        if (!libPath.exists()) {
+            throw new DoeException(StringUtil.format("the path[{}] is not exists.", path));
+        }
+
+        File[] jarFiles = libPath.listFiles((dir, name) -> name.endsWith(".jar") || name.endsWith(".zip"));
+
+        if (jarFiles != null) {
+            for (File file : jarFiles) {
+                log.info("begin to delete file {}.", file.getAbsolutePath());
+                boolean ret = file.delete();
+                if (!ret) {
+                    try {
+                        log.info("begin to force to delete file {}.", file.getAbsolutePath());
+                        FileUtils.forceDelete(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return ResultDTO.handleSuccess("delete sucess!", path);
+    }
+
+
 }
