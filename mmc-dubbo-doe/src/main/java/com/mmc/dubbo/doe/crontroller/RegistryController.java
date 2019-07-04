@@ -9,12 +9,12 @@
  */
 package com.mmc.dubbo.doe.crontroller;
 
-import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.mmc.dubbo.doe.dto.ResultDTO;
 import com.mmc.dubbo.doe.model.RegistryModel;
 import com.mmc.dubbo.doe.service.ConfigService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,7 +46,7 @@ public class RegistryController {
             List<RegistryModel> models = configService.listRegistry();
             result = JSON.toJSONString(models);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
 
             result = "[]";
         }
@@ -59,6 +59,11 @@ public class RegistryController {
     public ResultDTO<Object> doListRegistry() {
 
         log.info("RegistryController.doListRegistry()");
+        MDC.put("CUSTOM_PATTERN", "presstest");
+        log.info("hhhh");
+        log.warn("hh");
+        log.error("h");
+        System.out.println(MDC.get("PtxId"));
 
         ResultDTO<Object> resultDTO = new ResultDTO<>();
 
@@ -68,7 +73,7 @@ public class RegistryController {
             resultDTO.setData(models);
             resultDTO.setSuccess(true);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
 
             resultDTO = ResultDTO.createExceptionResult("occur an error when list registry address : ", e, Object.class);
         }
@@ -87,7 +92,7 @@ public class RegistryController {
 
             resultDTO = configService.addRegistry(dto);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
 
             resultDTO = ResultDTO.createExceptionResult(e, RegistryModel.class);
         }
@@ -106,7 +111,7 @@ public class RegistryController {
 
             resultDTO = configService.delRegistry(dto);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
 
             resultDTO = ResultDTO.createExceptionResult(e, RegistryModel.class);
         }

@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.mmc.dubbo.doe.cache.RedisResolver;
 import com.mmc.dubbo.doe.client.ProcessClient;
 import com.mmc.dubbo.doe.context.Const;
+import com.mmc.dubbo.doe.context.DoeClassLoader;
 import com.mmc.dubbo.doe.context.TaskContainer;
 import com.mmc.dubbo.doe.dto.PomDTO;
 import com.mmc.dubbo.doe.dto.ResultDTO;
@@ -292,7 +293,21 @@ public class PomServiceImpl implements PomService {
     }
 
     @Override
-    public ResultDTO<String> loadJars(String path) throws NoSuchMethodException, MalformedURLException {
+    public ResultDTO<String> loadJars(String path) {
+
+        String realPath = (StringUtils.isEmpty(path)) ? this.libPath : path;
+        DoeClassLoader classLoader = new DoeClassLoader(realPath);
+        try {
+            classLoader.loadJars();
+            return ResultDTO.createSuccessResult("load jars completely and successfully", String.class);
+        } catch (Exception e) {
+            return ResultDTO.handleException("occur an error when load jars", null, e);
+        }
+
+    }
+
+    @Deprecated // since v1.1.0
+    public ResultDTO<String> loadJars$$(String path) throws NoSuchMethodException, MalformedURLException {
 
         String fullLibPath = StringUtils.isEmpty(path) ? this.libPath : path;
 

@@ -16,6 +16,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.mmc.dubbo.doe.cache.MethodCaches;
 import com.mmc.dubbo.doe.cache.UrlCaches;
 import com.mmc.dubbo.doe.context.Const;
+import com.mmc.dubbo.doe.context.DoeClassLoader;
 import com.mmc.dubbo.doe.dto.ConnectDTO;
 import com.mmc.dubbo.doe.dto.MethodModelDTO;
 import com.mmc.dubbo.doe.dto.ResultDTO;
@@ -68,12 +69,12 @@ public class ClassServiceImpl implements ClassService {
         try {
 
             // show only public method
-            Class<?> clazz = Class.forName(interfaceName);
+            // Class<?> clazz = Class.forName(interfaceName);
+            // load classes without affect system class since v1.2.0
+            Class<?> clazz = DoeClassLoader.getClass(interfaceName);
             Method[] methods = clazz.getMethods();
             // convert and cache method object associate witch the unique key
-            List<MethodModelDTO> models = MethodCaches.cache(interfaceName, methods);
-
-            return models;
+            return MethodCaches.cache(interfaceName, methods);
 
         } catch (ClassNotFoundException e) {
             throw new DoeException("can't found the interface from classpath, please add the dependency first.");
