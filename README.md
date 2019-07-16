@@ -72,7 +72,7 @@
 * 无
 
 ##### 二. 优化功能
-* 增加mac系统判断
+* 增加mac系统判断(commited by Lutong )
 * 增加泛型接口测试
 * 修改dubbo依赖为starter方式
 * 修改类加载方式，增加沙箱隔离
