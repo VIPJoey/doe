@@ -93,6 +93,9 @@ public class PomServiceImpl implements PomService {
 
             locker.lock();
 
+            // clear old directory
+            deleteJars(libPath);
+
             // download jars asynchronously
             log.info("fork another thread to download jars.");
             TaskContainer.getTaskContainer().execute(processClient);
@@ -299,6 +302,7 @@ public class PomServiceImpl implements PomService {
         String realPath = (StringUtils.isEmpty(path)) ? this.libPath : path;
         DoeClassLoader classLoader = new DoeClassLoader(realPath);
         try {
+            classLoader.clearCache();
             classLoader.loadJars();
             return ResultDTO.createSuccessResult("load jars completely and successfully", String.class);
         } catch (Exception e) {
