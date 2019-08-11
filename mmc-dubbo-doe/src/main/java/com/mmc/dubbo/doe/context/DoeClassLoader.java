@@ -180,4 +180,10 @@ public class DoeClassLoader extends ClassLoader {
         }
     }
 
+    /**
+     * clear the class cache.
+     */
+    public void clearCache() {
+        classMap.clear();
+    }
 }
