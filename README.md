@@ -77,7 +77,7 @@
 - https://blog.csdn.net/hanyi_?t=1
 
 ## 版本发布记录
-* 无
+* [发布记录](https://github.com/VIPJoey/doe/blob/feature/doe_v1.3.0/UPGRADE.md)
 
 ## 特别说明
 - 由于平时比较忙，仓促写下的代码未免有BUG，请见谅
