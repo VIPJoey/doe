@@ -82,3 +82,17 @@
 ## 特别说明
 - 由于平时比较忙，仓促写下的代码未免有BUG，请见谅
 - 如遇到问题，可以github上留言，或贡献您的代码
+
+## 关于内推
+
+<table>
+    <tr>
+        <td>关注公众号即可获得大厂内推机会，优质简历可以全程帮忙跟踪进度，欢迎投递。</td>
+    </tr>
+        <tr>
+            <td>
+                <img src="https://github.com/VIPJoey/doe/blob/master/deploy/qrcode_for_gh_0c6aeb037ce4_258.jpg"/>
+           </td>
+    </tr>
+</table>
+
