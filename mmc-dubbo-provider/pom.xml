@@ -25,7 +25,7 @@
         <!-- springboot 整合 dubbo -->
         <version.starter.dubbo>0.2.0</version.starter.dubbo>
         <!-- fastjson -->
-        <version.fastjson>1.2.51</version.fastjson>
+        <version.fastjson>1.2.83</version.fastjson>
     </properties>
 
     <dependencies>
